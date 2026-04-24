@@ -1,5 +1,4 @@
 <div align="center">
-  <img src="https://img.icons8.com/?size=100&id=pE1W3V4wT50x&format=png&color=000000" alt="Cyber Security Icon" width="100"/>
   <h1>🛡️ CODE INFORMATION SECURITY & CRYPTOGRAPHY 🛡️</h1>
   <p><b>Hệ Sinh Thái Các Thuật Toán Mật Mã & An Toàn Thông Tin — Cài Đặt Thủ Công Bằng TypeScript</b></p>
 
@@ -315,22 +314,6 @@ Log chứa giá trị hex / bigint của **từng bước trung gian** (key sche
     </td>
   </tr>
 </table>
-
-### 🎓 Về chuyên ngành Khoa học Dữ liệu (Data Science)
-
-**Khoa học Dữ liệu** là ngành học liên ngành kết hợp ba trụ cột chính: **Toán học & Thống kê**, **Khoa học Máy tính**, và **Kiến thức chuyên môn (Domain Knowledge)** — nhằm khai phá tri thức, xây dựng mô hình dự đoán và ra quyết định dựa trên dữ liệu.
-
-| Trụ cột | Nội dung cốt lõi |
-|---|---|
-| 📐 **Toán học & Thống kê** | Đại số tuyến tính, Xác suất thống kê, Giải tích, Tối ưu hoá, Lý thuyết số (ứng dụng trong Mật mã) |
-| 💻 **Lập trình & CS** | Python, R, SQL, TypeScript/JavaScript, Cấu trúc dữ liệu & Giải thuật, Hệ phân tán, Big Data (Spark, Hadoop) |
-| 🧠 **Machine Learning / AI** | Hồi quy, Phân loại, Clustering, Deep Learning (CNN, RNN, Transformer), Reinforcement Learning, NLP, Computer Vision |
-| 🔐 **An toàn Dữ liệu** | Mật mã học ứng dụng (AES, ECC, Schnorr, SHA) — *chính là repo này*, Privacy-preserving ML, Federated Learning, Homomorphic Encryption |
-| 📊 **Trực quan hoá** | Matplotlib, Seaborn, Plotly, Power BI, Tableau |
-
-**Mối liên hệ của repo này với chuyên ngành:** Dự án hiện thực hoá các thuật toán mật mã nền tảng — công cụ cốt lõi để bảo vệ **tính bí mật (confidentiality)**, **toàn vẹn (integrity)** và **xác thực (authenticity)** của dữ liệu trong mọi hệ thống Data Science hiện đại (từ data pipeline → model serving → federated learning).
-
-> 💬 Mọi góp ý, báo lỗi hoặc câu hỏi về thuật toán/triển khai xin vui lòng liên hệ qua email ở trên. Rất mong nhận được phản hồi để hoàn thiện hệ sinh thái!
 
 ---
 
