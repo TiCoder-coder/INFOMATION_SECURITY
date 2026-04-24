@@ -1,0 +1,15 @@
+{
+  "name": "crypto-ecosystem-hub",
+  "version": "1.0.0",
+  "description": "Bảng điều khiển tập trung để khởi chạy các module thuật toán trong hệ sinh thái",
+  "private": true,
+  "scripts": {
+    "dev": "npx tsx cli-hub.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
+  }
+}

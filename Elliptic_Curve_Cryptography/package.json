@@ -1,0 +1,35 @@
+{
+  "name": "elliptic-curve-cryptography",
+  "version": "0.1.0",
+  "description": "ECIES (Elliptic Curve Integrated Encryption Scheme) implementation in TypeScript following SEC 1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/demo/run-demo.ts",
+    "dev": "ts-node src/demo/run-demo.ts",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint \"src/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "keywords": [
+    "ecc",
+    "ecies",
+    "elliptic-curve",
+    "cryptography",
+    "sec1"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {}
+}

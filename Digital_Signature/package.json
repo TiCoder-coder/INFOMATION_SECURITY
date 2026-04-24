@@ -1,0 +1,21 @@
+{
+  "name": "digital-signature-schnorr",
+  "version": "1.0.0",
+  "description": "Chữ ký số Schnorr trên Elliptic Curve tuân thủ lý thuyết với cấu trúc Micro-architecture",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node src/demo/run-schnorr.ts",
+    "verify": "ts-node src/demo/verify-schnorr.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/node": "^20.11.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2"
+  }
+}

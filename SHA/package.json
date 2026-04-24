@@ -1,0 +1,18 @@
+{
+  "name": "sha-xxx-encoder",
+  "version": "1.0.0",
+  "description": "SHA-1, SHA-2, SHA-3 Hash Encoder with detailed logging",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "ts-node main.ts",
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "test": "ts-node verify.ts",
+    "verify": "ts-node verify.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.9.3"
+  }
+}

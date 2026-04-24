@@ -1,0 +1,42 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Trạng thái Dependency
+node_modules/
+.pnp
+.pnp.js
+
+# Biên dịch (Compiled output)
+dist/
+dist-tsc/
+build/
+out/
+
+# Môi trường hệ điều hành Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thông tin Nhạy Cảm (Secrets)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+
+# File cấu hình IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Thư mục sinh tự động
+coverage/
+.nyc_output/

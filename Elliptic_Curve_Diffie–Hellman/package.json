@@ -1,0 +1,22 @@
+{
+  "name": "ecdh-key-exchange",
+  "version": "1.0.0",
+  "description": "Elliptic Curve Diffie-Hellman (ECDH) key agreement demo theo NIST SP 800-56A/56C",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "init-keys": "tsx src/scripts/initKeys.ts",
+    "start": "tsx src/index.ts",
+    "verify": "tsx src/scripts/verifyCrypto.ts",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "@types/node": "^22.9.0"
+  }
+}
