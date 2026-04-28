@@ -1,5 +1,3 @@
-// Demo có log CHI TIẾT: thực hiện thủ công từng bước của ECIES để ghi lại
-// tất cả giá trị trung gian (k, R, z, K, EK, MK, EM, TAG) vào logs/*.txt.
 import { loadDefaultCurve } from '../config/load-default-curve';
 import { loadEciesConfigFromEnv } from '../config/load-ecies-config-from-env';
 import { loadReceiverKeyPairFromEnv } from '../config/load-receiver-key-from-env';
@@ -19,14 +17,12 @@ import { EciesLogger } from '../logging/ecies-logger';
 
 function main(): void {
   const log = new EciesLogger();
-
-  // ===========================================================================
+  
   log.section('ECIES — ELLIPTIC CURVE INTEGRATED ENCRYPTION SCHEME (SEC 1)');
   log.line('Thời gian chạy : ' + new Date().toISOString());
   log.line('Ý nghĩa        : mã hóa thông điệp M bằng khóa công khai QV của bên nhận,');
   log.line('                 sử dụng ECDH + KDF + mã hóa đối xứng + MAC.');
 
-  // ===========================================================================
   log.section('GIAI ĐOẠN 0 — CHỌN ĐƯỜNG CONG & KIỂM TRA THAM SỐ MIỀN T');
   log.line('Bộ tham số miền T = (p, a, b, G, n, h) theo SEC 1.');
   log.line('Phương trình đường cong:  y² = x³ + a·x + b (mod p)');
@@ -54,8 +50,7 @@ function main(): void {
   if (!ok) throw new Error('Curve suy biến');
 
   log.stepLog('Cấu hình ECIES', JSON.stringify(cfg));
-
-  // ===========================================================================
+  
   log.section('GIAI ĐOẠN 1 — BÊN NHẬN (BOB) SINH CẶP KHÓA (dV, QV)');
   log.line('Công thức:  QV = dV · G');
   log.line('Ý nghĩa  :  dV là khóa riêng (bí mật), QV là khóa công khai (gửi cho bên gửi).');
@@ -78,7 +73,6 @@ function main(): void {
   );
   log.kv('QV valid?', validatePublicPoint(bob.publicKey.Q, T));
 
-  // ===========================================================================
   log.section('GIAI ĐOẠN 2 — BÊN GỬI (ALICE) MÃ HÓA  M  THÀNH  C = (R, EM, TAG)');
 
   const M = Buffer.from('Xin chào Bob — đây là thông điệp bí mật của Alice.', 'utf8');
@@ -150,7 +144,6 @@ function main(): void {
     'R để bên nhận tính lại z; EM là dữ liệu mã hóa; TAG để kiểm toàn vẹn.',
   );
 
-  // ===========================================================================
   log.section('GIAI ĐOẠN 3 — BÊN NHẬN (BOB) GIẢI MÃ  C → M');
 
   log.stepLog(
@@ -198,7 +191,7 @@ function main(): void {
   const matched = Buffer.compare(M, M2) === 0;
   log.kv('KẾT QUẢ', matched ? 'MÃ HÓA / GIẢI MÃ THÀNH CÔNG ✔' : 'SAI ✘');
 
-  // ===========================================================================
+  
   log.section('GIAI ĐOẠN 4 — KIỂM THỬ CÁC TRƯỜNG HỢP SAI');
 
   log.subsection('Case A: TAG bị sửa 1 bit');
@@ -225,13 +218,7 @@ function main(): void {
   log.kv('validatePublicPoint(R_fake)', validatePublicPoint(rFake, T));
   log.line('    → Bị từ chối ngay ở bước kiểm tra, không đi vào ECDH.');
 
-  // ===========================================================================
   log.section('KẾT LUẬN');
-  log.line('• Lược đồ ECIES bảo đảm:');
-  log.line('    1. Tính bí mật      — chỉ bên có dV mới tính được z và EK.');
-  log.line('    2. Tính toàn vẹn    — TAG = HMAC(MK, EM) phát hiện mọi sửa đổi.');
-  log.line('    3. Tính xác thực    — verify TAG bằng MK dẫn xuất từ shared secret.');
-  log.line('    4. Tiến lên phía trước — mỗi phiên dùng ephemeral key k mới.');
   log.line('• Các tấn công được chặn:');
   log.line('    - Bit-flipping ciphertext  → TAG fail.');
   log.line('    - Invalid-curve attack     → validatePublicPoint từ chối.');

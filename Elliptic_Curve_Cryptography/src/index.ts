@@ -1,4 +1,3 @@
-// Public API — re-export toàn bộ qua barrel files của mỗi module.
 export * from './field';
 export * from './curve';
 export * from './domain';

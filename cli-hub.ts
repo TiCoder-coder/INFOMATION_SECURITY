@@ -50,11 +50,11 @@ rl.question('> Vui lòng nhập số tương ứng để chọn thuật toán ch
   console.log(`- Thư mục đích: ${targetDir}\n- Tiến trình: npm run dev\n`);
   console.log('------------------------------------------------------------\n');
 
-  // Khởi chạy tiến trình con trong thư mục của project đó
+  
   const child = spawn('npm', ['run', 'dev'], {
     cwd: targetDir,
     stdio: 'inherit',
-    shell: true // Sử dụng shell để tương thích môi trường npm path
+    shell: true 
   });
 
   child.on('close', (code: number | null) => {

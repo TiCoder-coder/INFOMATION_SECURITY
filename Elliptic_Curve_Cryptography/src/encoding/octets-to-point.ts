@@ -1,4 +1,3 @@
-// SEC 1 §2.3.4: Octet-String-to-Elliptic-Curve-Point (hỗ trợ uncompressed 0x04).
 import type { CurvePoint } from '../domain/types/curve-point';
 import { POINT_AT_INFINITY } from '../domain/types/curve-point';
 

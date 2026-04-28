@@ -1,35 +1,17 @@
-/**
- * ecPoint.ts
- * -----------------------------------------------------------
- * Phép toán điểm trên đường cong elliptic trên trường F_p:
- *
- *     y^2 = x^3 + a*x + b  (mod p)
- *
- * CÀI THỦ CÔNG: cộng điểm, nhân đôi điểm, nhân vô hướng
- * (double-and-add).  Toạ độ affine (x, y) + phần tử vô cực O.
- *
- * Không dùng crypto/ECC library nào.
- * -----------------------------------------------------------
- */
-
 import { mod, modInverse } from "./bigintMath.ts";
 
 export interface CurveParams {
-  p: bigint; // trường F_p
-  a: bigint; // hệ số a
-  b: bigint; // hệ số b
-  Gx: bigint; // toạ độ x của điểm sinh G
-  Gy: bigint; // toạ độ y của điểm sinh G
-  n: bigint; // bậc của G
-  h: bigint; // cofactor
-  byteLength: number; // số byte của p (để serialize)
+  p: bigint; 
+  a: bigint; 
+  b: bigint; 
+  Gx: bigint; 
+  Gy: bigint; 
+  n: bigint; 
+  h: bigint; 
+  byteLength: number; 
   name: string;
 }
 
-/**
- * Một điểm affine trên đường cong.  Nếu `infinity = true` thì
- * đây là phần tử trung hoà O (điểm vô cực).
- */
 export interface ECPoint {
   x: bigint;
   y: bigint;
@@ -42,36 +24,21 @@ export const POINT_AT_INFINITY: ECPoint = {
   infinity: true,
 };
 
-/**
- * Kiểm tra điểm có thoả y^2 ≡ x^3 + a*x + b  (mod p) hay không.
- * Điểm vô cực được coi là hợp lệ.
- */
 export function isOnCurve(P: ECPoint, c: CurveParams): boolean {
   if (P.infinity) return true;
   const { p, a, b } = c;
-  // Điều kiện nằm trong [0, p-1]
+  
   if (P.x < 0n || P.x >= p || P.y < 0n || P.y >= p) return false;
   const lhs = mod(P.y * P.y, p);
   const rhs = mod(P.x * P.x * P.x + a * P.x + b, p);
   return lhs === rhs;
 }
 
-/** Đảo điểm: -P = (x, -y mod p) */
 export function pointNegate(P: ECPoint, c: CurveParams): ECPoint {
   if (P.infinity) return POINT_AT_INFINITY;
   return { x: P.x, y: mod(-P.y, c.p), infinity: false };
 }
 
-/**
- * Cộng điểm P + Q trên đường cong elliptic (affine).
- *
- * Các trường hợp:
- *   - P = O → Q
- *   - Q = O → P
- *   - P = -Q → O
- *   - P = Q  → dùng công thức nhân đôi
- *   - còn lại: λ = (yQ - yP) / (xQ - xP)
- */
 export function pointAdd(
   P: ECPoint,
   Q: ECPoint,
@@ -83,37 +50,31 @@ export function pointAdd(
   const { p } = c;
 
   if (P.x === Q.x) {
-    // P + (-P) = O
+    
     if (mod(P.y + Q.y, p) === 0n) return POINT_AT_INFINITY;
-    // P == Q → double
+    
     if (P.y === Q.y) return pointDouble(P, c);
     return POINT_AT_INFINITY;
   }
 
-  // λ = (yQ - yP) * (xQ - xP)^{-1}  mod p
+  
   const num = mod(Q.y - P.y, p);
   const den = modInverse(mod(Q.x - P.x, p), p);
   const lam = mod(num * den, p);
 
-  // x3 = λ^2 - xP - xQ
+  
   const x3 = mod(lam * lam - P.x - Q.x, p);
-  // y3 = λ*(xP - x3) - yP
+  
   const y3 = mod(lam * (P.x - x3) - P.y, p);
 
   return { x: x3, y: y3, infinity: false };
 }
 
-/**
- * Nhân đôi điểm: 2P.
- *   λ = (3xP^2 + a) / (2yP)
- *   x3 = λ^2 - 2xP
- *   y3 = λ(xP - x3) - yP
- */
 export function pointDouble(P: ECPoint, c: CurveParams): ECPoint {
   if (P.infinity) return POINT_AT_INFINITY;
   const { p, a } = c;
 
-  if (P.y === 0n) return POINT_AT_INFINITY; // tiếp tuyến đứng
+  if (P.y === 0n) return POINT_AT_INFINITY; 
 
   const num = mod(3n * P.x * P.x + a, p);
   const den = modInverse(mod(2n * P.y, p), p);
@@ -124,24 +85,13 @@ export function pointDouble(P: ECPoint, c: CurveParams): ECPoint {
   return { x: x3, y: y3, infinity: false };
 }
 
-/**
- * Nhân vô hướng k·P bằng thuật toán "double-and-add":
- *
- *   R = O
- *   for i from hi_bit(k) down to 0:
- *       R = 2R
- *       if bit_i(k) == 1: R = R + P
- *
- * Đây là TRÁI TIM của ECDH — vì Q = d·G, S = d·Q là cùng
- * một phép nhân vô hướng trên đường cong.
- */
 export function scalarMultiply(
   k: bigint,
   P: ECPoint,
   c: CurveParams,
 ): ECPoint {
   if (k < 0n) {
-    // k·P với k<0 = (-k)·(-P)
+    
     return scalarMultiply(-k, pointNegate(P, c), c);
   }
   if (k === 0n || P.infinity) return POINT_AT_INFINITY;
@@ -159,11 +109,6 @@ export function scalarMultiply(
   }
   return R;
 }
-
-// ===================================================================
-// Serialize / Deserialize điểm theo SEC1 §2.3.3 (uncompressed)
-//   04 || X (byteLength) || Y (byteLength)
-// ===================================================================
 
 export function encodePointUncompressed(P: ECPoint, c: CurveParams): Buffer {
   if (P.infinity) {

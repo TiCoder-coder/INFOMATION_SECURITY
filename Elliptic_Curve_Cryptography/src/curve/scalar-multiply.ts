@@ -1,4 +1,3 @@
-// Scalar multiplication k·P bằng thuật toán double-and-add.
 import type { CurvePoint } from '../domain/types/curve-point';
 import { POINT_AT_INFINITY } from '../domain/types/curve-point';
 import { pointAdd } from './point-add';
@@ -8,7 +7,7 @@ import type { DomainParameters } from '../domain/types/domain-parameters';
 export function scalarMultiply(k: bigint, P: CurvePoint, T: DomainParameters): CurvePoint {
   if (P.infinity) return POINT_AT_INFINITY;
 
-  // Normalize k để hỗ trợ số 0, chiều âm, và chống tràn mod n
+  
   let scalar = k % T.n;
   if (scalar < 0n) scalar += T.n;
 

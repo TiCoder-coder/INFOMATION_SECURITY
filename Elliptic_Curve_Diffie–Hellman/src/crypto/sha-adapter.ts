@@ -1,16 +1,3 @@
-// sha-adapter.ts
-// ─────────────────────────────────────────────────────────────────────────────
-// Adapter để ECDH project gọi SHA logic từ SHA project (sibling directory).
-// Không thay đổi bất kỳ file nào trong SHA project.
-//
-// Vấn đề API:
-//   SHA project : SHA256Encoder.encode(input: string, logger: Logger): string
-//   ECDH cần    : sha256(data: Buffer): Buffer
-//
-// Giải pháp: tạo silentLogger (object thỏa giao diện Logger nhưng no-op)
-// rồi gọi trực tiếp các core modules của SHA project với data đã convert.
-// ─────────────────────────────────────────────────────────────────────────────
-
 import { PaddingHandler }    from '../../../SHA/src/core/padding_handler';
 import { BlockHandler }      from '../../../SHA/src/core/block_handler';
 import { HashInitializer }   from '../../../SHA/src/core/hash_initializer';
@@ -19,7 +6,6 @@ import { CompressionEngine } from '../../../SHA/src/core/compression_engine';
 import { HashAggregator }    from '../../../SHA/src/core/hash_aggregator';
 import { Logger }            from '../../../SHA/src/utils/logger';
 
-// ─── Silent Logger ───────────────────────────────────────────────────────────
 const _logger: Logger = Object.assign(
   Object.create(Logger.prototype) as Logger,
   {
@@ -43,18 +29,10 @@ const _logger: Logger = Object.assign(
   }
 );
 
-// ─── Helper: hex string → Buffer ───────────────────────────────────────────
 function hexToBuffer(hex: string): Buffer {
   return Buffer.from(hex, 'hex');
 }
 
-// ─── SHA-256 via SHA project ──────────────────────────────────────────────────
-/**
- * SHA-256 — delegates toàn bộ logic sang SHA project.
- *
- * @param data  Dữ liệu cần băm (Buffer)
- * @returns     32-byte Buffer chứa SHA-256 digest
- */
 export function sha256(data: Buffer): Buffer {
   const bytes     = Array.from(data);
   const padded    = PaddingHandler.padSHA256([...bytes], _logger);
@@ -70,5 +48,5 @@ export function sha256(data: Buffer): Buffer {
   }
 
   const hexResult = HashAggregator.finalizeSHA256(hashState, _logger);
-  return hexToBuffer(hexResult); // 32 bytes
+  return hexToBuffer(hexResult); 
 }

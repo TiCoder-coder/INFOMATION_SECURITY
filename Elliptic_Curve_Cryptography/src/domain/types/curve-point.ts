@@ -1,4 +1,3 @@
-// Điểm affine (x, y) trên đường cong elliptic, hoặc điểm vô cực O.
 export interface AffinePoint {
   readonly x: bigint;
   readonly y: bigint;

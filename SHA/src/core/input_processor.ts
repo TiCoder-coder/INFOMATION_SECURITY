@@ -1,9 +1,3 @@
-/**
- * Input Processor
- * Bước 1: Nhận dữ liệu đầu vào
- * Bước 2: Chuyển dữ liệu sang dạng nhị phân
- */
-
 import { TypeConverter } from '../utils/type_converter';
 import { Logger } from '../utils/logger';
 
@@ -34,7 +28,7 @@ Kết quả là mảng byte (0..255) sẽ được dùng làm input thô cho SHA
     logger.hex('Bytes (hex)    ', TypeConverter.bytesToHex(bytes));
     logger.binary('Bytes (binary) ', TypeConverter.bytesToBinary(bytes));
 
-    // In bảng mapping ký tự → byte để dễ theo dõi
+    
     logger.note('Mapping ký tự → UTF-8 byte:');
     let idx = 0;
     for (const ch of input) {

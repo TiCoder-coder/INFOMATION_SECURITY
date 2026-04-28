@@ -1,4 +1,3 @@
-// Barrel export cho toàn bộ module crypto thuần TypeScript.
 export { sha256 }             from './sha256';
 export { sha384, sha512 }     from './sha512';
 export { hmac, hmacSha256 }   from './hmac';

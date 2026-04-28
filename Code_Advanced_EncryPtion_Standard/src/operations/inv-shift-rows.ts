@@ -1,6 +1,5 @@
 import { State } from '../types';
 
-/** InvShiftRows: dịch phải vòng mỗi row (row i shift i byte) */
 export function invShiftRows(state: State): State {
   return [
     [state[0][0], state[0][1], state[0][2], state[0][3]],

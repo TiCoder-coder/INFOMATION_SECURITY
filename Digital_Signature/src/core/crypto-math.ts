@@ -9,7 +9,7 @@ export function computeChallenge(
   domain: DomainParameters,
   logger?: SchnorrLogger
 ): bigint {
-  const fieldSizeBytes = 32; // secp256k1
+  const fieldSizeBytes = 32; 
   const rBytes = pointToOctets(R, fieldSizeBytes);
   const pBytes = pointToOctets(P, fieldSizeBytes);
 

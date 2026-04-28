@@ -1,7 +1,3 @@
-// Kiểm tra điểm có hợp lệ để dùng trong ECC (SEC 1 §3.2.2.1):
-//  - không phải điểm vô cực
-//  - nằm trên đường cong
-//  - n·P = O (nếu cofactor ≠ 1)
 import type { CurvePoint } from '../domain/types/curve-point';
 import type { DomainParameters } from '../domain/types/domain-parameters';
 import { isPointOnCurve } from './is-point-on-curve';

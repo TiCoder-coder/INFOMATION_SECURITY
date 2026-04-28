@@ -1,4 +1,3 @@
-// Hàm dùng để chuyển đổi từ string -> byte array, byte array -> hex string,...
 export function stringToBytes(str: string): number[] {
   return Array.from(Buffer.from(str, 'utf-8'));
 }

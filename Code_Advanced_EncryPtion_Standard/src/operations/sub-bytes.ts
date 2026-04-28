@@ -3,12 +3,10 @@ import { sBoxLookup, STATE_ROWS, NB } from '../constants';
 
 const toHex = (n: number) => n.toString(16).padStart(2, '0');
 
-/** SubBytes: mỗi byte → S-Box lookup */
 export function subBytes(state: State): State {
   return state.map(row => row.map(byte => sBoxLookup(byte)));
 }
 
-/** SubBytes kèm chi tiết từng byte để logging */
 export function subBytesWithDetails(
   state: State
 ): { result: State; details: SubBytesDetail } {

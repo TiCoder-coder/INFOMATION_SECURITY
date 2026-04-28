@@ -11,17 +11,14 @@ function ensureLogsDir(): void {
   }
 }
 
-/** Tạo log entry cho một step */
 export function createStepLog(step: string, state: State): StepLog {
   return { step, state: stateToHexMatrix(state) };
 }
 
-/** Tạo base filename chung cho JSON & TXT để 2 file luôn khớp timestamp */
 function makeBaseFilename(log: AESOperationLog, timestamp: number): string {
   return `aes-${log.keySize}-${log.mode}-${timestamp}`;
 }
 
-/** Ghi log ra file JSON */
 export function saveLogJSON(log: AESOperationLog, timestamp: number = Date.now()): string {
   ensureLogsDir();
   const filename = `${makeBaseFilename(log, timestamp)}.json`;
@@ -30,7 +27,6 @@ export function saveLogJSON(log: AESOperationLog, timestamp: number = Date.now()
   return filepath;
 }
 
-/** Ghi log ra file TXT (readable) */
 export function saveLogTXT(log: AESOperationLog, timestamp: number = Date.now()): string {
   ensureLogsDir();
   const filename = `${makeBaseFilename(log, timestamp)}.txt`;
@@ -110,7 +106,6 @@ export function saveLogTXT(log: AESOperationLog, timestamp: number = Date.now())
   return filepath;
 }
 
-/** Ghi cả JSON + TXT với cùng 1 timestamp (giải pháp cho lỗi 2 file lệch tên) */
 export function saveLog(log: AESOperationLog): { jsonPath: string; txtPath: string } {
   const ts = Date.now();
   return {

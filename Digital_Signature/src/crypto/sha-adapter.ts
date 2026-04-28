@@ -1,7 +1,4 @@
-// sha-adapter.ts
-// ─────────────────────────────────────────────────────────────────────────────
-// Adapter để Digital_Signature gọi SHA logic từ SHA project (sibling directory).
-// ─────────────────────────────────────────────────────────────────────────────
+
 
 import { PaddingHandler }    from '../../../SHA/src/core/padding_handler';
 import { BlockHandler }      from '../../../SHA/src/core/block_handler';
@@ -11,7 +8,6 @@ import { CompressionEngine } from '../../../SHA/src/core/compression_engine';
 import { HashAggregator }    from '../../../SHA/src/core/hash_aggregator';
 import { Logger }            from '../../../SHA/src/utils/logger';
 
-// ─── Silent Logger ───────────────────────────────────────────────────────────
 const _logger: Logger = Object.assign(
   Object.create(Logger.prototype),
   {
@@ -35,7 +31,6 @@ const _logger: Logger = Object.assign(
   }
 );
 
-// ─── Helper: hex string → Uint8Array ────────────────────────────────────────
 function hexToUint8Array(hex: string): Uint8Array {
   const bytes = new Uint8Array(hex.length / 2);
   for (let i = 0; i < hex.length; i += 2) {
@@ -44,7 +39,6 @@ function hexToUint8Array(hex: string): Uint8Array {
   return bytes;
 }
 
-// ─── SHA-256 via SHA project ──────────────────────────────────────────────────
 export function sha256(data: Uint8Array): Uint8Array {
   const bytes     = Array.from(data);
   const padded    = PaddingHandler.padSHA256([...bytes], _logger);

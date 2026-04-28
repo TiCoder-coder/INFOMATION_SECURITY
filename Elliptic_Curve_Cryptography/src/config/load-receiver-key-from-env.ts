@@ -1,4 +1,3 @@
-// Load cặp khóa receiver tĩnh từ .env (nếu có). Trả về undefined khi không cấu hình.
 import type { DomainParameters } from '../domain/types/domain-parameters';
 import type { KeyPair } from '../keys/types/key-types';
 import { getEnvOptional } from './get-env';

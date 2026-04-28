@@ -1,8 +1,3 @@
-/**
- * Compression Engine
- * Bước 8: Thực hiện các vòng nén (lõi của SHA)
- */
-
 import { BitUtils } from '../utils/bit_utils';
 import { ConstantsManager } from '../utils/constants_manager';
 import { Logger } from '../utils/logger';
@@ -11,10 +6,6 @@ const hex32 = (x: number) => '0x' + (x >>> 0).toString(16).padStart(8, '0');
 const hex64 = (x: bigint) => '0x' + x.toString(16).padStart(16, '0');
 
 export class CompressionEngine {
-  /**
-   * Nén block SHA-256 / SHA-224 (SHA-224 dùng cùng engine, chỉ khác IV).
-   * `label` chỉ dùng để in log cho đúng biến thể.
-   */
   static compressSHA256(
     blockWords: number[],
     hashState: number[],
@@ -80,9 +71,6 @@ Mỗi round ${label} cập nhật 8 working variable (a..h) theo:
     return [a, b, c, d, e, f, g, h];
   }
 
-  /**
-   * Nén block SHA-224 (tương tự SHA-256, khác IV)
-   */
   static compressSHA224(
     blockWords: number[],
     hashState: number[],
@@ -91,9 +79,6 @@ Mỗi round ${label} cập nhật 8 working variable (a..h) theo:
     return this.compressSHA256(blockWords, hashState, logger, 'SHA-224');
   }
 
-  /**
-   * Nén block SHA-1
-   */
   static compressSHA1(
     blockWords: number[],
     hashState: number[],
@@ -147,9 +132,6 @@ mỗi đoạn 20 round dùng hàm f và hằng số K khác nhau:
     return [a, b, c, d, e];
   }
 
-  /**
-   * Nén block SHA-512 / SHA-384. SHA-384 dùng cùng engine, chỉ khác IV.
-   */
   static compressSHA512(
     blockWords: bigint[],
     hashState: bigint[],
@@ -208,9 +190,6 @@ ${label} tương tự SHA-256 nhưng toán hạng 64-bit và các rotate khác:
     return [a, b, c, d, e, f, g, h];
   }
 
-  /**
-   * Nén block SHA-384 (tương tự SHA-512, khác IV)
-   */
   static compressSHA384(
     blockWords: bigint[],
     hashState: bigint[],

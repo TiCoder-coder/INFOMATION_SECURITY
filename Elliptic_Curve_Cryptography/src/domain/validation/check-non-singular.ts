@@ -1,4 +1,3 @@
-// Kiểm tra điều kiện không suy biến: 4·a^3 + 27·b^2 ≢ 0 (mod p).
 import { modMul, modAdd } from '../../field/fp-arithmetic';
 
 export function isCurveNonSingular(a: bigint, b: bigint, p: bigint): boolean {

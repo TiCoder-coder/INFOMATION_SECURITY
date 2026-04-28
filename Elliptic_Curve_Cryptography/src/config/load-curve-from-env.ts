@@ -1,4 +1,3 @@
-// Load tham số miền của một curve từ .env.
 import type { DomainParameters } from '../domain/types/domain-parameters';
 import { getEnvHex, getEnvInt } from './get-env';
 

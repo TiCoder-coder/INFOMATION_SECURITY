@@ -15,7 +15,6 @@ console.log(`\n📄[INFO] Da tao File Log chi tiet tai: ${logger.path}\n`);
 
 logger.section("DEMO: CHU KY SO SCHNORR (SECP256K1) QUY MO MICRO-ARCHITECTURE");
 
-// 1. SINH KHOA
 logger.stepLog("HE THONG DANG TAO KHOA P=d*G CHO ALICE...");
 
 let aliceKeys;
@@ -38,7 +37,6 @@ if (!aliceKeys.publicKey.infinity) {
   logger.kv('Alice Public Key', 'Infinity Point');
 }
 
-// 2. KY THONG DIEP
 const defaultMessage = envConfig.DEFAULT_MESSAGE;
 logger.subsection("ALICE TIEN HANH KY THONG DIEP CHUAN...");
 logger.kv('Ban tin (m)', `"${defaultMessage}"`);
@@ -54,7 +52,6 @@ if (!signature.R.infinity) {
 }
 logger.hex('Gia tri (s)', signature.s);
 
-// 3. XAC MINH HOP LE
 logger.subsection("BOB XAC MINH CHU KY (VOI BAN TIN GOC)...");
 const isDefaultValid = schnorrVerify(messageBytes, signature, aliceKeys.publicKey, secp256k1, logger);
 if (isDefaultValid) {
@@ -63,7 +60,6 @@ if (isDefaultValid) {
   logger.stepLog('KET QUA CUOI CUNG', '"Khong hop le"!');
 }
 
-// 4. KE TAN CONG THAY DOI DU LIEU
 logger.subsection("TIN TAC (EVE) CAN THIEP GIAN LAN THONG DIEP...");
 const tamperedMessage = envConfig.TAMPERED_MESSAGE;
 logger.kv("Ban tin bi can thiep (m')", `"${tamperedMessage}"`);

@@ -1,4 +1,3 @@
-// Chọn curve mặc định theo biến ECC_CURVE trong .env.
 import type { DomainParameters } from '../domain/types/domain-parameters';
 import { getEnv } from './get-env';
 import { loadCurveFromEnv } from './load-curve-from-env';

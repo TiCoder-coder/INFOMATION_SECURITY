@@ -1,4 +1,3 @@
-// Nhân đôi điểm 2·P trên đường cong elliptic (affine).
 import type { CurvePoint, AffinePoint } from '../domain/types/curve-point';
 import { POINT_AT_INFINITY } from '../domain/types/curve-point';
 import { modAdd, modMul, modSub } from '../field/fp-arithmetic';
@@ -9,7 +8,7 @@ export function pointDouble(P: CurvePoint, T: DomainParameters): CurvePoint {
   if (P.infinity) return POINT_AT_INFINITY;
   if (P.y === 0n) return POINT_AT_INFINITY;
   const { p, a } = T;
-  // λ = (3·x^2 + a) / (2·y) mod p
+  
   const numerator = modAdd(modMul(3n, modMul(P.x, P.x, p), p), a, p);
   const denom = modInverse(modMul(2n, P.y, p), p);
   const lambda = modMul(numerator, denom, p);

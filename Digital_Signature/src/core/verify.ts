@@ -18,11 +18,11 @@ export function schnorrVerify(
     logger.hex('Gia tri s', s);
   }
 
-  // B1: Môi trường phía xác nhận tự tính lại giá trị thách thức e = H(R || P || m) mod n
+  
   if (logger) logger.stepLog('Tinh Toan Lai e = H(R || P || m)');
   const e = computeChallenge(R, publicKey, message, domain, logger);
 
-  // B2: Tính vế trái L = s * G
+  
   const L = scalarMultiply(s, domain.G, domain);
   if (logger) {
     logger.stepLog('Tinh Ve Trai (L = s * G)', 'Diem L (X, Y)');
@@ -34,7 +34,7 @@ export function schnorrVerify(
     }
   }
 
-  // B3: Tính vế phải V = R + e * P
+  
   const eP = scalarMultiply(e, publicKey, domain);
   if (logger) {
     logger.stepLog('Tinh Giao (e * P)');
@@ -55,7 +55,7 @@ export function schnorrVerify(
     }
   }
 
-  // B4: So sánh L và V
+  
   let isValid = false;
   if (L.infinity || V.infinity) {
     isValid = L.infinity === V.infinity;

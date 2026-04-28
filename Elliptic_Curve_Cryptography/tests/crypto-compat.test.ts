@@ -1,5 +1,3 @@
-// Kiểm tra các primitive crypto (SHA, HMAC, AES-256-CTR) khớp với Node crypto.
-// Đảm bảo implementation thuần TypeScript tuân thủ FIPS/RFC/NIST và tương thích.
 import * as crypto from 'crypto';
 import { aes256ctr } from '../src/crypto/ctr';
 import { sha256, sha384, sha512 } from '../src/crypto/sha-adapter';

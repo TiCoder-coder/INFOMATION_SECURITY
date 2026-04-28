@@ -1,4 +1,3 @@
-// Đường cong secp256k1 (dùng trong Bitcoin). Tham số theo SEC 2.
 import type { DomainParameters } from '../types/domain-parameters';
 
 export const SECP256K1: DomainParameters = {

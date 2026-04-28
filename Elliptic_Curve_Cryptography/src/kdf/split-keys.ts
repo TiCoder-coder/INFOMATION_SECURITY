@@ -1,4 +1,3 @@
-// Tách keying data K thành (EK || MK) theo độ dài quy ước.
 export interface SplitKeys {
   readonly EK: Buffer;
   readonly MK: Buffer;

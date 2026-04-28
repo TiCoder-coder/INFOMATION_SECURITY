@@ -1,17 +1,7 @@
-/**
- * Word Expander
- * Bước 7: Tạo các từ mở rộng từ block dữ liệu
- */
-
 import { BitUtils } from '../utils/bit_utils';
-// (Removed unused ConstantsManager import)
 import { Logger } from '../utils/logger';
 
 export class WordExpander {
-  /**
-   * Mở rộng message schedule cho SHA-256 / SHA-224
-   * Từ 16 word đầu mở rộng thành 64 word
-   */
   static expandSHA256(blockWords: number[], logger: Logger): number[] {
     logger.step(7, 'Tạo các từ mở rộng (SHA-256: 16 → 64 words)');
     logger.explain(`
@@ -54,10 +44,6 @@ Mỗi block 512-bit được chia thành 16 từ 32-bit (W[0]..W[15]).
     return w;
   }
 
-  /**
-   * Mở rộng message schedule cho SHA-1
-   * Từ 16 word đầu mở rộng thành 80 word
-   */
   static expandSHA1(blockWords: number[], logger: Logger): number[] {
     logger.step(7, 'Tạo các từ mở rộng (SHA-1: 16 → 80 words)');
     logger.explain(`
@@ -87,10 +73,6 @@ SHA-1 mở rộng message schedule bằng công thức đơn giản hơn SHA-2:
     return w;
   }
 
-  /**
-   * Mở rộng message schedule cho SHA-512 / SHA-384
-   * Từ 16 word đầu mở rộng thành 80 word (64-bit)
-   */
   static expandSHA512(blockWords: bigint[], logger: Logger): bigint[] {
     logger.step(7, 'Tạo các từ mở rộng (SHA-512: 16 → 80 words, 64-bit)');
     logger.explain(`

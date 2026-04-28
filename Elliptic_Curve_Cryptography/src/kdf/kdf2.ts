@@ -1,6 +1,3 @@
-// KDF2 theo ANSI X9.63 / SEC 1 §3.6.1: sinh keying data từ shared secret octet string.
-//   K = Hash(Z || counter) || Hash(Z || counter+1) || ...
-// Không dùng node:crypto — dùng SHA thuần TypeScript từ src/crypto.
 import { sha256 }         from '../crypto/sha256';
 import { sha384, sha512 } from '../crypto/sha512';
 
@@ -28,7 +25,7 @@ export function kdf2(
 
   const chunks: Uint8Array[] = [];
   for (let counter = 1; counter <= iterations; counter++) {
-    // Ghép Z ‖ counter(4 byte BE) ‖ sharedInfo
+    
     const input = new Uint8Array(Z.length + 4 + sharedInfo.length);
     input.set(Z);
     const ctrView = new DataView(input.buffer, Z.length, 4);
@@ -36,8 +33,7 @@ export function kdf2(
     input.set(sharedInfo, Z.length + 4);
     chunks.push(hashFn(hashAlg, input));
   }
-
-  // Ghép tất cả chunk rồi cắt đúng keyLen byte.
+  
   const total = new Uint8Array(hashLen * iterations);
   let off = 0;
   for (const c of chunks) { total.set(c, off); off += c.length; }

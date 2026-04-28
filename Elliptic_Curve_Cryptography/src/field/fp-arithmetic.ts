@@ -1,5 +1,3 @@
-// Các phép toán modular cơ bản trên trường F_p.
-
 export function mod(a: bigint, p: bigint): bigint {
   const r = a % p;
   return r >= 0n ? r : r + p;

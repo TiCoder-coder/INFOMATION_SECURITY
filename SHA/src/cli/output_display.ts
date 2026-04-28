@@ -1,5 +1,3 @@
-// Hiển thị kết quả
-
 const WIDTH = 52;
 const TOP = '╔' + '═'.repeat(WIDTH) + '╗';
 const MID = '╠' + '═'.repeat(WIDTH) + '╣';
@@ -22,7 +20,7 @@ function truncate(text: string, max: number): string {
 
 export class OutputDisplay {
   static displayResult(algorithm: string, input: string, hash: string, logPath: string): void {
-    const labelWidth = 14; // "  Hash:        "
+    const labelWidth = 14; 
     const valueWidth = WIDTH - labelWidth;
 
     console.log('\n' + TOP);
@@ -31,7 +29,7 @@ export class OutputDisplay {
     console.log(line(`  Algorithm:  ${truncate(algorithm, valueWidth)}`));
     console.log(line(`  Input:      ${truncate(input, valueWidth)}`));
 
-    // Hash có thể dài, chia thành nhiều dòng
+    
     const firstChunk = hash.substring(0, valueWidth);
     console.log(line(`  Hash:       ${firstChunk}`));
     for (let i = valueWidth; i < hash.length; i += valueWidth) {

@@ -1,4 +1,3 @@
-// Kiểm tra 1 điểm có nằm trên đường cong y^2 = x^3 + a·x + b (mod p) không.
 import type { CurvePoint } from '../domain/types/curve-point';
 import type { DomainParameters } from '../domain/types/domain-parameters';
 import { mod, modMul, modAdd } from '../field/fp-arithmetic';

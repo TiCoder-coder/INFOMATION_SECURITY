@@ -3,7 +3,6 @@ import { rotWord } from './rot-word';
 import { subWord } from './sub-word';
 import { RCON } from '../constants';
 
-// Dùng để tính toán các word mới trong quá trình mở rộng key
 export function processWord(temp: Word, i: number, Nk: number): Word {
   if (i % Nk === 0) {
     const rotated = rotWord(temp);

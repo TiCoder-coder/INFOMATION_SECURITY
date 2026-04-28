@@ -1,36 +1,26 @@
-/**
- * Constants Manager - Quản lý các hằng số của SHA
- */
-
 export class ConstantsManager {
-  // SHA-1 constants
   static SHA1_INITIAL_VALUES = [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0];
 
-  // SHA-224 initial values
   static SHA224_INITIAL_VALUES = [
     0xc1059ed8, 0x367cd507, 0x3070dd17, 0xf70e5939, 0xffc00b31, 0x68581511, 0x64f98fa7,
     0xbefa4fa4,
   ];
-
-  // SHA-256 initial values
+  
   static SHA256_INITIAL_VALUES = [
     0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab,
     0x5be0cd19,
   ];
 
-  // SHA-384 initial values
   static SHA384_INITIAL_VALUES = [
     0xcbbb9d5dc1059ed8n, 0x629a292a367cd507n, 0x9159015a3070dd17n, 0x152fecd8f70e5939n,
     0x67332667ffc00b31n, 0x8eb44a8768581511n, 0xdb0c2e0d64f98fa7n, 0x47b5481dbefa4fa4n,
   ];
 
-  // SHA-512 initial values
   static SHA512_INITIAL_VALUES = [
     0x6a09e667f3bcc908n, 0xbb67ae8584caa73bn, 0x3c6ef372fe94f82bn, 0xa54ff53a5f1d36f1n,
     0x510e527fade682d1n, 0x9b05688c2b3e6c1fn, 0x1f83d9abfb41bd6bn, 0x5be0cd19137e2179n,
   ];
 
-  // SHA-256 & SHA-224 constants (first 32 bits of fractional parts of cube roots of first 64 primes)
   static SHA256_CONSTANTS = [
     0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4,
     0xab1c5ed5, 0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe,
@@ -44,7 +34,6 @@ export class ConstantsManager {
     0xc67178f2,
   ];
 
-  // SHA-512/384 constants
   static SHA512_CONSTANTS = [
     0x428a2f98d728ae22n, 0x7137449123ef65cdn, 0xb5c0fbcfec4d3b2fn, 0xe9b5dba58189dbbcn,
     0x3956c25bf348b538n, 0x59f111f1b605d019n, 0x923f82a4af194f9bn, 0xab1c5ed5da6d8118n,
@@ -67,7 +56,4 @@ export class ConstantsManager {
     0x28db77f523047d84n, 0x32caab7b40c72493n, 0x3c9ebe0a15c9bebcn, 0x431d67c49c100d4cn,
     0x4cc5d4becb3e42b6n, 0x597f299cfc657e2an, 0x5fcb6fab3ad6faecn, 0x6c44198c4a475817n,
   ];
-
-  // SHA-3 constants are defined (và được sử dụng trực tiếp) trong
-  // `src/algorithms/sha3/constants.ts` — tránh trùng lặp tại đây.
 }

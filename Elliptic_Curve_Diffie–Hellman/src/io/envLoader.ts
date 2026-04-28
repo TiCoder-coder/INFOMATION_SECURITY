@@ -1,18 +1,7 @@
-/**
- * envLoader.ts
- * -----------------------------------------------------------
- * Nạp (load) các biến môi trường từ file `.env` và cung cấp
- * một đối tượng cấu hình đã được kiểm tra kiểu (typed).
- *
- * Đây là bước "đọc khoá / đọc tham số" trước khi chạy ECDH.
- * -----------------------------------------------------------
- */
-
 import dotenv from "dotenv";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// Resolve project root (folder chứa .env)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PROJECT_ROOT = path.resolve(__dirname, "..", "..");
@@ -20,19 +9,16 @@ const PROJECT_ROOT = path.resolve(__dirname, "..", "..");
 dotenv.config({ path: path.join(PROJECT_ROOT, ".env") });
 
 export interface AppConfig {
-  // Domain parameters
+  
   curveName: string;
-
-  // KDF (NIST SP 800-56C — HKDF)
+  
   kdfHash: string;
   kdfSalt: Buffer;
   kdfInfo: Buffer;
   kdfKeyLength: number;
 
-  // Symmetric cipher
   symmetricAlgorithm: string;
 
-  // Key storage paths
   keyDir: string;
   partyA: {
     privateKeyPath: string;

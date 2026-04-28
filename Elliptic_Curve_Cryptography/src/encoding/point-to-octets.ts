@@ -1,4 +1,3 @@
-// SEC 1 §2.3.3: Elliptic-Curve-Point-to-Octet-String (uncompressed form 0x04 || X || Y).
 import type { CurvePoint } from '../domain/types/curve-point';
 import { fieldElementToOctets } from './field-element-to-octets';
 

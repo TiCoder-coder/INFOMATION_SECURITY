@@ -5,7 +5,6 @@ dist/
 web-build/
 expo-env.d.ts
 
-# AES demo log output
 logs/
 
 .kotlin/

@@ -1,4 +1,3 @@
-// Điểm đối -P = (x, -y mod p).
 import type { CurvePoint } from '../domain/types/curve-point';
 import { POINT_AT_INFINITY } from '../domain/types/curve-point';
 import { modNeg } from '../field/fp-arithmetic';

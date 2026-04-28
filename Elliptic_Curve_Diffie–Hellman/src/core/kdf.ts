@@ -1,18 +1,3 @@
-/**
- * kdf.ts
- * -----------------------------------------------------------
- * HKDF-SHA256 (RFC 5869) — cài thủ công trên HMAC tự cài.
- *
- *   Extract:  PRK = HMAC(salt, IKM)
- *   Expand:   T(0) = ""
- *             T(i) = HMAC(PRK, T(i-1) || info || i)
- *             OKM  = T(1)||T(2)||...  (cắt về L byte)
- *
- * Theo NIST SP 800-56C, đây là cách chuẩn để dẫn xuất khoá
- * từ shared secret Z của ECDH.
- * -----------------------------------------------------------
- */
-
 import { hmacSha256, HMAC_SHA256_OUTPUT } from "../crypto/index.ts";
 
 export interface KdfParams {
@@ -21,14 +6,12 @@ export interface KdfParams {
   keyLength: number;
 }
 
-/** RFC 5869 §2.2 — HKDF-Extract */
 export function hkdfExtract(salt: Buffer, ikm: Buffer): Buffer {
   const actualSalt =
     salt.length > 0 ? salt : Buffer.alloc(HMAC_SHA256_OUTPUT, 0x00);
   return hmacSha256(actualSalt, ikm);
 }
 
-/** RFC 5869 §2.3 — HKDF-Expand */
 export function hkdfExpand(
   prk: Buffer,
   info: Buffer,
@@ -51,7 +34,6 @@ export function hkdfExpand(
   return Buffer.concat(T).subarray(0, length);
 }
 
-/** HKDF = Extract → Expand. */
 export function deriveSessionKey(
   sharedSecret: Buffer,
   params: KdfParams,

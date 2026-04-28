@@ -11,14 +11,14 @@ export function schnorrSign(
 ): SchnorrSignature {
   if (logger) logger.section('TIEN HANH CHU KY SCHNORR');
 
-  // B1: Chọn nonce bí mật k ngẫu nhiên (1 <= k <= n - 1)
+  
   const k = generateRandomScalar(domain.n);
   if (logger) {
     logger.stepLog('Sinh nonce ngau nhien (k)');
     logger.hex('Gia tri k', k);
   }
   
-  // B2: Tính điểm tạm thời R = k * G
+  
   const R = scalarMultiply(k, domain.G, domain);
   if (logger && !R.infinity) {
     logger.stepLog('Tinh Toan Diem Tạm Thoi (R = k * G)');
@@ -26,13 +26,13 @@ export function schnorrSign(
     logger.hex('R.y', R.y);
   }
   
-  // Tự tính lại Public Key (P = d * G) để cung cấp cho việc băm xác định e
+  
   const P = scalarMultiply(privateKey, domain.G, domain);
 
-  // B3: Tính thách thức e = H(R || P || m) mod n
+  
   const e = computeChallenge(R, P, message, domain, logger);
 
-  // B4: Tính đại lượng chữ ký s = (k + e * d) mod n
+  
   let s = (k + e * privateKey) % domain.n;
   if (logger) {
     logger.stepLog('Tinh Toan Dai Luong Chu Ky (s = k + e * d mod n)');

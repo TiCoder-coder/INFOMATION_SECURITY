@@ -1,4 +1,3 @@
-// Load cấu hình ECIES từ .env.
 import type { EciesConfig } from '../ecies/config/ecies-config';
 import { getEnv } from './get-env';
 

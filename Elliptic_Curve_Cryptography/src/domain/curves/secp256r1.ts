@@ -1,4 +1,3 @@
-// Đường cong secp256r1 (NIST P-256). Tham số theo SEC 2 / FIPS 186-4.
 import type { DomainParameters } from '../types/domain-parameters';
 
 export const SECP256R1: DomainParameters = {

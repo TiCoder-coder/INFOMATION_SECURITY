@@ -1,7 +1,5 @@
-/**
- * Verify SHA implementation against Node's built-in `crypto` module.
- * Chạy: `npm test`
- */
+
+
 import * as crypto from 'crypto';
 import { SHA1Encoder } from './src/algorithms/sha1/encoder';
 import { SHA224Encoder } from './src/algorithms/sha2/sha224';
@@ -12,10 +10,6 @@ import { SHA3_256Encoder } from './src/algorithms/sha3/sha3_256';
 import { SHA3_384Encoder } from './src/algorithms/sha3/sha3_384';
 import { SHA3_512Encoder } from './src/algorithms/sha3/sha3_512';
 
-/**
- * Silent logger — thay thế Logger thật để tránh ghi file + console khi verify.
- * Các encoder chỉ gọi phương thức → return void nên `any` cast là an toàn.
- */
 const silentLogger: any = new Proxy(
   {},
   {

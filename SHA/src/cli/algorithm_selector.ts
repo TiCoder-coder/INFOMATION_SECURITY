@@ -1,5 +1,3 @@
-// Chọn thuật toán
-
 export interface AlgorithmOption {
   id: string;
   name: string;

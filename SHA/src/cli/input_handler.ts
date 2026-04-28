@@ -1,5 +1,3 @@
-// Nhập dữ liệu từ người dùng
-
 import * as readline from 'readline';
 
 const WIDTH = 52;

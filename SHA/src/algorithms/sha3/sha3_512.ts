@@ -1,7 +1,3 @@
-/**
- * SHA-3-512 Encoder
- */
-
 import { InputProcessor } from '../../core/input_processor';
 import { Logger } from '../../utils/logger';
 import { Keccak256Operations } from './operations';

@@ -1,18 +1,3 @@
-/**
- * verifyCrypto.ts
- * -----------------------------------------------------------
- * Kiểm thử toàn bộ primitive tự cài vs Node `crypto`:
- *   - SHA-256
- *   - HMAC-SHA256
- *   - HKDF (extract + expand)
- *   - AES-256 block encrypt (via ECB-1block oracle)
- *   - AES-256-GCM encrypt + decrypt (roundtrip & cross-check)
- *   - ECDH trên P-256 (scalarMultiply & shared secret)
- *
- * Chạy: npx tsx src/scripts/verifyCrypto.ts
- * -----------------------------------------------------------
- */
-
 import crypto from "node:crypto";
 import { sha256 } from "../crypto/sha256.ts";
 import { hmacSha256 } from "../crypto/hmac.ts";
@@ -36,7 +21,6 @@ function check(name: string, ok: boolean, detail = ""): void {
   console.log(`  ${sym} ${name}${detail ? "  — " + detail : ""}`);
 }
 
-// ─── 1. SHA-256 ────────────────────────────────────────────
 console.log("\n[1] SHA-256 vs node:crypto");
 for (const msg of [
   Buffer.alloc(0),
@@ -49,7 +33,6 @@ for (const msg of [
   check(`sha256 len=${msg.length}`, eq(mine, ref));
 }
 
-// ─── 2. HMAC-SHA256 ────────────────────────────────────────
 console.log("\n[2] HMAC-SHA256 vs node:crypto");
 for (const [kl, ml] of [
   [16, 0], [32, 50], [64, 128], [100, 500], [200, 4],
@@ -61,7 +44,6 @@ for (const [kl, ml] of [
   check(`hmac keyLen=${kl} msgLen=${ml}`, eq(mine, ref));
 }
 
-// ─── 3. HKDF ───────────────────────────────────────────────
 console.log("\n[3] HKDF-SHA256 vs node:crypto");
 for (const L of [16, 32, 42, 64, 100, 255 * 32]) {
   const ikm = crypto.randomBytes(32);
@@ -72,7 +54,7 @@ for (const L of [16, 32, 42, 64, 100, 255 * 32]) {
   const okmRef = Buffer.from(crypto.hkdfSync("sha256", ikm, salt, info, L));
   check(`hkdf L=${L}`, eq(okmMine, okmRef));
 }
-// Edge: empty salt → RFC says use HashLen zeros
+
 {
   const ikm = crypto.randomBytes(32);
   const info = Buffer.alloc(0);
@@ -85,7 +67,6 @@ for (const L of [16, 32, 42, 64, 100, 255 * 32]) {
   check(`hkdf empty salt L=${L}`, eq(okmMine, okmRef));
 }
 
-// ─── 4. AES-256 block ──────────────────────────────────────
 console.log("\n[4] AES-256 single-block vs node:crypto (ECB)");
 for (let i = 0; i < 5; i++) {
   const key = crypto.randomBytes(32);
@@ -98,7 +79,6 @@ for (let i = 0; i < 5; i++) {
   check(`aes-256 block #${i + 1}`, eq(mine, ref));
 }
 
-// ─── 5. AES-256-GCM ────────────────────────────────────────
 console.log("\n[5] AES-256-GCM vs node:crypto");
 for (const [pl, al] of [
   [0, 0], [15, 0], [16, 0], [17, 0], [100, 0],
@@ -109,10 +89,10 @@ for (const [pl, al] of [
   const pt = crypto.randomBytes(pl);
   const aad = crypto.randomBytes(al);
 
-  // Ours
+  
   const mine = aesGcmEncrypt(key, iv, pt, aad);
 
-  // Ref
+  
   const cipher = crypto.createCipheriv("aes-256-gcm", key, iv);
   if (al > 0) cipher.setAAD(aad);
   const refCt = Buffer.concat([cipher.update(pt), cipher.final()]);
@@ -123,7 +103,7 @@ for (const [pl, al] of [
   check(`gcm enc pl=${pl} al=${al}`, dataOk && tagOk,
         dataOk && tagOk ? "" : `data=${dataOk} tag=${tagOk}`);
 
-  // Cross-decrypt: ours decrypts node's output
+  
   const decOurs = aesGcmDecrypt(
     key,
     { iv, authTag: refTag, data: refCt },
@@ -131,7 +111,7 @@ for (const [pl, al] of [
   );
   check(`gcm dec(ours←node) pl=${pl} al=${al}`, eq(decOurs, pt));
 
-  // Node decrypts ours
+  
   const dec = crypto.createDecipheriv("aes-256-gcm", key, iv);
   if (al > 0) dec.setAAD(aad);
   dec.setAuthTag(mine.authTag);
@@ -139,7 +119,6 @@ for (const [pl, al] of [
   check(`gcm dec(node←ours) pl=${pl} al=${al}`, eq(decNode, pt));
 }
 
-// GCM tamper detection
 {
   const key = crypto.randomBytes(32);
   const iv = crypto.randomBytes(12);
@@ -152,11 +131,10 @@ for (const [pl, al] of [
   check("gcm rejects tampered ciphertext", threw);
 }
 
-// ─── 6. ECDH on P-256 ──────────────────────────────────────
 console.log("\n[6] ECDH P-256 vs node:crypto");
 const c = selectDomainParameters("prime256v1");
 for (let i = 0; i < 3; i++) {
-  // Generate via Node, compute via ours, compare
+  
   const refA = crypto.createECDH("prime256v1");
   refA.generateKeys();
   const refB = crypto.createECDH("prime256v1");
@@ -169,15 +147,15 @@ for (let i = 0; i < 3; i++) {
   const QA = scalarMultiply(dA, G, c);
   const QB = scalarMultiply(dB, G, c);
 
-  // Compare public points (SEC1 uncompressed)
+  
   const QAenc = encodePointUncompressed(QA, c);
   const QBenc = encodePointUncompressed(QB, c);
-  const QArefBuf = refA.getPublicKey(); // already 04||X||Y
+  const QArefBuf = refA.getPublicKey(); 
   const QBrefBuf = refB.getPublicKey();
   check(`pub A match #${i + 1}`, eq(QAenc, QArefBuf));
   check(`pub B match #${i + 1}`, eq(QBenc, QBrefBuf));
 
-  // Shared secrets
+  
   const SA = scalarMultiply(dA, QB, c);
   const SB = scalarMultiply(dB, QA, c);
   const ZA = bigIntToBuffer(SA.x, c.byteLength);
@@ -186,7 +164,6 @@ for (let i = 0; i < 3; i++) {
   check(`Z matches (SA=SB=ref) #${i + 1}`, eq(ZA, ZB) && eq(ZA, ZRef));
 }
 
-// ─── Summary ───────────────────────────────────────────────
 const passed = results.filter((r) => r.ok).length;
 const failed = results.length - passed;
 console.log("\n" + "=".repeat(60));

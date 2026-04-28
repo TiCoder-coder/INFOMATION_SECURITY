@@ -1,4 +1,4 @@
-// Kiểu khóa riêng / khóa công khai / cặp khóa.
+
 import type { CurvePoint } from '../../domain/types/curve-point';
 import type { DomainParameters } from '../../domain/types/domain-parameters';
 

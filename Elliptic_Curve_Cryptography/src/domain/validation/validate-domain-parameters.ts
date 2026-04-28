@@ -1,4 +1,3 @@
-// Kiểm tra tham số miền theo thủ tục SEC 1 §3.1.2.
 import type { DomainParameters } from '../types/domain-parameters';
 import { isCurveNonSingular } from './check-non-singular';
 import { isPointOnCurve } from '../../curve/is-point-on-curve';

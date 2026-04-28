@@ -3,12 +3,10 @@ import { invSBoxLookup, STATE_ROWS, NB } from '../constants';
 
 const toHex = (n: number) => n.toString(16).padStart(2, '0');
 
-/** InvSubBytes: mỗi byte → Inverse S-Box lookup */
 export function invSubBytes(state: State): State {
   return state.map(row => row.map(byte => invSBoxLookup(byte)));
 }
 
-/** InvSubBytes kèm chi tiết từng byte để logging */
 export function invSubBytesWithDetails(
   state: State
 ): { result: State; details: SubBytesDetail } {

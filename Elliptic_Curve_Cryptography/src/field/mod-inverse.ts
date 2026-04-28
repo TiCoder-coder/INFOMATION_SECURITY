@@ -1,4 +1,3 @@
-// Nghịch đảo modular bằng thuật toán Extended Euclidean.
 export function modInverse(a: bigint, p: bigint): bigint {
   if (a === 0n) throw new Error('Zero has no modular inverse');
   let [oldR, r] = [((a % p) + p) % p, p];

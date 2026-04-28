@@ -1,5 +1,3 @@
-// Mã hóa đối xứng AES-256-CTR (bulk encryption trong ECIES).
-// Không dùng node:crypto — dùng AES-256-CTR thuần TypeScript từ src/crypto.
 import { aes256ctr } from '../crypto/ctr';
 import { randomBytes } from '../crypto/random';
 

@@ -1,16 +1,3 @@
-/**
- * aes256.ts
- * -----------------------------------------------------------
- * AES-256 (Rijndael) — cài thủ công theo FIPS 197.
- *
- * Hỗ trợ đúng 1 primitive: mã hoá 1 block 16 byte bằng khoá
- * 32 byte (AES-256).  Không có decrypt block vì GCM chỉ dùng
- * encrypt-forward (CTR-mode style).
- * -----------------------------------------------------------
- */
-
-// S-box chuẩn FIPS 197
-// prettier-ignore
 const SBOX = new Uint8Array([
   0x63,0x7c,0x77,0x7b,0xf2,0x6b,0x6f,0xc5,0x30,0x01,0x67,0x2b,0xfe,0xd7,0xab,0x76,
   0xca,0x82,0xc9,0x7d,0xfa,0x59,0x47,0xf0,0xad,0xd4,0xa2,0xaf,0x9c,0xa4,0x72,0xc0,
@@ -30,14 +17,10 @@ const SBOX = new Uint8Array([
   0x8c,0xa1,0x89,0x0d,0xbf,0xe6,0x42,0x68,0x41,0x99,0x2d,0x0f,0xb0,0x54,0xbb,0x16,
 ]);
 
-// Hằng số Rcon cho key expansion (Rcon[1..10] dùng cho AES-256: cần tới i=7,
-// nhưng ta chừa đủ)
-// prettier-ignore
 const RCON = new Uint8Array([
   0x00,0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80,0x1b,0x36,0x6c,0xd8,0xab,0x4d,
 ]);
 
-/** Nhân trong GF(2^8) với đa thức tối giản 0x11B (dùng trong MixColumns). */
 function xtime(x: number): number {
   return ((x << 1) ^ ((x & 0x80) ? 0x1b : 0x00)) & 0xff;
 }
@@ -55,11 +38,6 @@ function rotWord(w: number): number {
   return (((w << 8) | (w >>> 24)) >>> 0);
 }
 
-/**
- * Sinh round keys cho AES-256.
- *   Nk = 8 (key words), Nb = 4 (state cols), Nr = 14 (rounds)
- * → tổng cộng Nb*(Nr+1) = 60 word
- */
 export function keyExpansion256(key: Buffer): Uint32Array {
   if (key.length !== 32) {
     throw new Error("[aes256] AES-256 cần khoá 32 byte");
@@ -91,9 +69,6 @@ export function keyExpansion256(key: Buffer): Uint32Array {
   return W;
 }
 
-// ---------- Các biến đổi trên state ----------
-// State: mảng 16 byte, theo cột-major (state[r + 4c])
-
 function addRoundKey(state: Uint8Array, W: Uint32Array, round: number): void {
   for (let c = 0; c < 4; c++) {
     const w = W[round * 4 + c];
@@ -109,7 +84,7 @@ function subBytes(state: Uint8Array): void {
 }
 
 function shiftRows(state: Uint8Array): void {
-  // row 1 shift 1, row 2 shift 2, row 3 shift 3
+  
   const t = new Uint8Array(16);
   for (let r = 0; r < 4; r++) {
     for (let c = 0; c < 4; c++) {
@@ -133,13 +108,12 @@ function mixColumns(state: Uint8Array): void {
   }
 }
 
-/** Mã hoá 1 block 16 byte bằng AES-256. */
 export function aes256EncryptBlock(block: Buffer, W: Uint32Array): Buffer {
   if (block.length !== 16) {
     throw new Error("[aes256] Block phải đúng 16 byte");
   }
   const Nr = 14;
-  const state = new Uint8Array(block); // copy
+  const state = new Uint8Array(block); 
 
   addRoundKey(state, W, 0);
   for (let round = 1; round < Nr; round++) {

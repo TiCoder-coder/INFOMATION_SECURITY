@@ -19,12 +19,12 @@ export class UserInterface {
     const logger = new Logger();
 
     try {
-      // Step 1: Select Main Algorithm
+      
       AlgorithmSelector.displayMainMenu();
       const mainChoice = await inputHandler.selectNumber(1, 3, 'Chọn thuật toán (1-3): ');
       const mainAlgo = AlgorithmSelector.MAIN_ALGORITHMS[mainChoice - 1];
 
-      // Step 2: Select Variant
+      
       const variants = AlgorithmSelector.displayVariants(mainAlgo.id);
       if (!variants) {
         OutputDisplay.displayError('Không có biến thể cho thuật toán này');
@@ -35,10 +35,10 @@ export class UserInterface {
       const variantChoice = await inputHandler.selectNumber(1, variants.length, 'Chọn biến thể (1-' + variants.length + '): ');
       const selectedVariant = variants[variantChoice - 1];
 
-      // Step 3: Get Input
+      
       const inputString = await inputHandler.getInputString();
 
-      // Step 4: Encode
+      
       logger.info(`=== Starting ${selectedVariant.name} encoding ===`);
       let hash = '';
 
@@ -75,7 +75,7 @@ export class UserInterface {
           return;
       }
 
-      // Step 5: Display Result
+      
       OutputDisplay.displayResult(selectedVariant.name, inputString, hash, logger.getLogPath());
       logger.summary(selectedVariant.name, inputString, hash);
     } catch (error) {

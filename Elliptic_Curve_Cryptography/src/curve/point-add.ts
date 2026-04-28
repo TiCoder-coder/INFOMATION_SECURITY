@@ -1,4 +1,3 @@
-// Cộng hai điểm phân biệt P + Q trên đường cong elliptic (affine).
 import type { CurvePoint, AffinePoint } from '../domain/types/curve-point';
 import { POINT_AT_INFINITY } from '../domain/types/curve-point';
 import { modSub, modMul } from '../field/fp-arithmetic';
@@ -12,9 +11,9 @@ export function pointAdd(P: CurvePoint, Q: CurvePoint, T: DomainParameters): Cur
   const { p } = T;
   if (P.x === Q.x) {
     if (P.y === Q.y) return pointDouble(P, T);
-    return POINT_AT_INFINITY; // P + (-P) = O
+    return POINT_AT_INFINITY; 
   }
-  // slope λ = (y2 - y1) / (x2 - x1) mod p
+  
   const lambda = modMul(modSub(Q.y, P.y, p), modInverse(modSub(Q.x, P.x, p), p), p);
   const xR = modSub(modSub(modMul(lambda, lambda, p), P.x, p), Q.x, p);
   const yR = modSub(modMul(lambda, modSub(P.x, xR, p), p), P.y, p);

@@ -1,11 +1,3 @@
-/**
- * AES-CBC (FIPS 197) — orchestrator.
- *
- * CBC Mode (Cipher Block Chaining):
- *   - Encrypt: C[i] = AES_Encrypt(P[i] XOR C[i-1]),  C[-1] = IV
- *   - Decrypt: P[i] = AES_Decrypt(C[i]) XOR C[i-1],  C[-1] = IV
- *   - Padding: PKCS#7 áp dụng trên toàn bộ plaintext trước khi chia block (chỉ chạy ở lần cuối).
- */
 import * as crypto from 'crypto';
 import {
   AESKeySize,
@@ -39,10 +31,6 @@ import {
   createStepLog,
   saveLog,
 } from './utils';
-
-// ====================================================================
-// Helpers
-// ====================================================================
 
 function roundKeyToHex(rk: number[][]): string {
   const flat = rk[0].concat(rk[1], rk[2], rk[3]);
@@ -87,10 +75,6 @@ function ensureIV(iv: number[] | undefined): number[] {
   return iv;
 }
 
-// ====================================================================
-// Block-level: Encrypt & Decrypt một block 16 bytes
-// ====================================================================
-
 function encryptBlock(
   block: number[],
   expandedKey: Word[],
@@ -101,7 +85,7 @@ function encryptBlock(
 
   let state: State = bytesToState(block);
 
-  // Round 0: AddRoundKey (Initial)
+  
   const rk0 = getRoundKey(expandedKey, 0);
   state = addRoundKey(state, rk0);
   const log0 = createStepLog('AddRoundKey (Initial)', cloneState(state));
@@ -109,7 +93,7 @@ function encryptBlock(
   log0.roundKeyHex = roundKeyToHex(rk0);
   roundDetails.push({ round: 0, steps: [log0] });
 
-  // Rounds 1 → Nr-1
+  
   for (let round = 1; round < Nr; round++) {
     const steps = [];
 
@@ -138,7 +122,7 @@ function encryptBlock(
     roundDetails.push({ round, steps });
   }
 
-  // Final round (không MixColumns)
+  
   {
     const steps = [];
 
@@ -174,7 +158,7 @@ function decryptBlock(
 
   let state: State = bytesToState(block);
 
-  // Round 0 của decrypt: AddRoundKey với rk[Nr]
+  
   const rkStart = getRoundKey(expandedKey, Nr);
   state = addRoundKey(state, rkStart);
   const log0 = createStepLog('AddRoundKey (Initial)', cloneState(state));
@@ -182,7 +166,7 @@ function decryptBlock(
   log0.roundKeyHex = roundKeyToHex(rkStart);
   roundDetails.push({ round: 0, steps: [log0] });
 
-  // Rounds Nr-1 → 1 (inverse cipher)
+  
   for (let round = Nr - 1; round >= 1; round--) {
     const steps = [];
 
@@ -211,7 +195,7 @@ function decryptBlock(
     roundDetails.push({ round: Nr - round, steps });
   }
 
-  // Final round: InvShiftRows → InvSubBytes → AddRoundKey(rk[0]) (không InvMixColumns)
+  
   {
     const steps = [];
 
@@ -237,31 +221,20 @@ function decryptBlock(
   return { plainBlock: stateToBytes(state), roundDetails };
 }
 
-// ====================================================================
-// Public API: AES-CBC Encrypt
-// ====================================================================
-
 export interface AESEncryptOptions {
-  /** Key bytes (nếu không truyền sẽ random) */
+  
   key?: number[];
-  /** IV bytes (nếu không truyền sẽ random) — phải = 16 bytes */
+  
   iv?: number[];
-  /** Có ghi log ra file không (default: true) */
+  
   writeLogFiles?: boolean;
 }
 
 export interface AESDecryptOptions {
-  /** Có ghi log ra file không (default: true) */
+  
   writeLogFiles?: boolean;
 }
 
-/**
- * Mã hoá plaintext bằng AES-CBC với PKCS#7 padding.
- *
- * @param plaintext  Chuỗi cần mã hoá (UTF-8)
- * @param keySize    128 | 192 | 256
- * @param options    Cho phép truyền key/IV có sẵn (dùng để test với FIPS 197 vectors)
- */
 export function aesEncrypt(
   plaintext: string,
   keySize: AESKeySize,
@@ -272,7 +245,7 @@ export function aesEncrypt(
   const ivBytes = ensureIV(options.iv);
 
   const plaintextBytes = stringToBytes(plaintext);
-  // PKCS#7 padding áp dụng TRƯỚC khi chia block — đảm bảo mảng là bội của 16
+  
   const paddedBytes = pkcs7Pad(plaintextBytes);
 
   const expandedKey = keyExpansion(keyBytes, config);
@@ -281,12 +254,12 @@ export function aesEncrypt(
   const allRoundDetails: RoundLog[] = [];
   const cipherBytes: number[] = [];
 
-  // CBC: C[-1] = IV
+  
   let previousBlock = [...ivBytes];
 
   for (let offset = 0; offset < paddedBytes.length; offset += BLOCK_SIZE_BYTES) {
     const block = paddedBytes.slice(offset, offset + BLOCK_SIZE_BYTES);
-    // CBC XOR: P[i] XOR C[i-1]
+    
     const xorBlock = block.map((b, i) => b ^ previousBlock[i]);
 
     const { cipherBlock, roundDetails } = encryptBlock(xorBlock, expandedKey, config);
@@ -320,18 +293,6 @@ export function aesEncrypt(
   return log;
 }
 
-// ====================================================================
-// Public API: AES-CBC Decrypt
-// ====================================================================
-
-/**
- * Giải mã ciphertext bằng AES-CBC.
- *
- * @param ciphertextHex  Hex string của ciphertext
- * @param keyHex         Hex string của key (length phải khớp keySize)
- * @param ivHex          Hex string của IV (16 bytes)
- * @param keySize        128 | 192 | 256
- */
 export function aesDecrypt(
   ciphertextHex: string,
   keyHex: string,
@@ -358,7 +319,7 @@ export function aesDecrypt(
   const allRoundDetails: RoundLog[] = [];
   const plainPadded: number[] = [];
 
-  // CBC decrypt: C[-1] = IV
+  
   let previousBlock = [...ivBytes];
 
   for (let offset = 0; offset < cipherBytes.length; offset += BLOCK_SIZE_BYTES) {
@@ -368,7 +329,7 @@ export function aesDecrypt(
       expandedKey,
       config
     );
-    // CBC XOR: AES_Decrypt(C[i]) XOR C[i-1]
+    
     const xorBlock = decryptedBlock.map((b, i) => b ^ previousBlock[i]);
     previousBlock = [...block];
 

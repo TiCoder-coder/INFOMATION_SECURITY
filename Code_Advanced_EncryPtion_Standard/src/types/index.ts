@@ -13,8 +13,6 @@ export interface AESConfig {
   Nr: number;
 }
 
-// ===== Logging detail types =====
-
 export interface MixColumnsColumnLog {
   column: number;
   input: string[];
@@ -49,8 +47,6 @@ export interface RoundLog {
   steps: StepLog[];
 }
 
-// ===== Operation log (thống nhất cho cả Encrypt & Decrypt) =====
-
 export interface AESOperationLog {
   mode: AESMode;
   timestamp: string;
@@ -61,15 +57,14 @@ export interface AESOperationLog {
   roundKeys: string[];
   roundDetails: RoundLog[];
 
-  // Plaintext (input khi encrypt, output khi decrypt)
+  
   plaintext: string;
   plaintextHex: string;
 
-  // Ciphertext (output khi encrypt, input khi decrypt)
+  
   ciphertextHex: string;
   ciphertextBase64: string;
 }
 
-// Alias giữ tương thích ngược
 export type EncryptionLog = AESOperationLog;
 export type DecryptionLog = AESOperationLog;

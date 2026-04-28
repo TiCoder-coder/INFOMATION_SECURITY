@@ -1,6 +1,5 @@
 import { State } from '../types';
 
-/** ShiftRows: dịch trái vòng mỗi row (row i shift i byte) */
 export function shiftRows(state: State): State {
   return [
     [state[0][0], state[0][1], state[0][2], state[0][3]],

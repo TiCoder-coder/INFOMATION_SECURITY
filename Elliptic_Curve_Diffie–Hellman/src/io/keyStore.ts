@@ -1,11 +1,3 @@
-/**
- * keyStore.ts
- * -----------------------------------------------------------
- * I/O khoá: lưu/đọc khoá riêng d và khoá công khai Q ra file.
- * Dùng cấu trúc JSON đơn giản + hex.
- * -----------------------------------------------------------
- */
-
 import fs from "node:fs";
 import path from "node:path";
 import type { KeyPair } from "../core/index.ts";

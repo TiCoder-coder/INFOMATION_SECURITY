@@ -1,5 +1,3 @@
-// Giải mã đối xứng AES-256-CTR.
-// Không dùng node:crypto — CTR mode: decrypt === encrypt (XOR keystream).
 import { aes256ctr } from '../crypto/ctr';
 
 export function symmetricDecrypt(EK: Buffer, iv: Buffer, ct: Buffer): Buffer {

@@ -1,12 +1,3 @@
-/**
- * initKeys.ts
- * -----------------------------------------------------------
- * Script sinh khoá ECDH cho bên A và bên B, lưu ra keys/.
- *
- * Chạy: npm run init-keys
- * -----------------------------------------------------------
- */
-
 import { loadConfig } from "../io/index.ts";
 import {
   selectDomainParameters,

@@ -1,8 +1,4 @@
-/**
- * Digital_Signature - Schnorr Signature on Elliptic Curves
- * 
- * Re-export các module cốt lõi ra bên ngoài.
- */
+
 
 export * from './config';
 export * from './core';

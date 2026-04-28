@@ -1,9 +1,6 @@
-// Tạo tất cả round keys từ cipher key ban đầu
-
 import { Word, AESConfig } from '../types';
 import { processWord, xorWords } from './key-schedule-core';
 
-// Dùng để mở rộng key 16/24/32 bytes thành 44/52/60 words (4 bytes mỗi word)
 export function keyExpansion(keyBytes: number[], config: AESConfig): Word[] {
   const { Nk, Nb, Nr } = config;
   const totalWords = Nb * (Nr + 1);
@@ -27,7 +24,6 @@ export function keyExpansion(keyBytes: number[], config: AESConfig): Word[] {
   return W;
 }
 
-// Biến expandedKey thành round key thứ n (4 word = 16 bytes)
 export function getRoundKey(expandedKey: Word[], round: number): number[][] {
   const start = round * 4;
   const key: number[][] = Array.from({ length: 4 }, () => new Array(4).fill(0));

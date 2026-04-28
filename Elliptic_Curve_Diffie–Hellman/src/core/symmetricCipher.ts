@@ -1,13 +1,3 @@
-/**
- * symmetricCipher.ts
- * -----------------------------------------------------------
- * BƯỚC CUỐI CỦA LƯU ĐỒ:
- *   "Dùng K cho mã hoá đối xứng"
- *
- * C = AES-256-GCM_K(M)  — toàn bộ AES & GCM do project tự cài.
- * -----------------------------------------------------------
- */
-
 import { aesGcmEncrypt, aesGcmDecrypt, type GcmCiphertext } from "../crypto/index.ts";
 import { randomBytes } from "../math/index.ts";
 

@@ -1,12 +1,7 @@
-// Các hàm toán học cho Keccak sponge construction
-
 import { BitUtils } from '../../utils/bit_utils';
 
 export class Keccak256Operations {
-  /**
-   * Theta (θ) step
-   * XOR mỗi lane với parity của hai lane được xoay qua nó
-   */
+  
   static theta(state: bigint[][]): bigint[][] {
     const newState = state.map(row => [...row]);
     const c = Array(5).fill(0n).map((_, x) =>
@@ -26,10 +21,6 @@ export class Keccak256Operations {
     return newState;
   }
 
-  /**
-   * Rho (ρ) step
-   * Xoay trái mỗi lane đi một số lượng khác nhau
-   */
   static rho(state: bigint[][], offsets: number[][]): bigint[][] {
     const newState = state.map(row => [...row]);
 
@@ -43,10 +34,6 @@ export class Keccak256Operations {
     return newState;
   }
 
-  /**
-   * Pi (π) step
-   * Sắp xếp lại các lane theo cách cố định
-   */
   static pi(state: bigint[][]): bigint[][] {
     const newState: bigint[][] = Array(5).fill(null).map(() => Array(5).fill(0n));
 
@@ -59,10 +46,6 @@ export class Keccak256Operations {
     return newState;
   }
 
-  /**
-   * Chi (χ) step
-   * XOR mỗi bit với AND của hai bit được xoay qua nó
-   */
   static chi(state: bigint[][]): bigint[][] {
     const newState = state.map(row => [...row]);
 
@@ -76,20 +59,12 @@ export class Keccak256Operations {
     return newState;
   }
 
-  /**
-   * Iota (ι) step
-   * XOR round constant vào lane [0][0]
-   */
   static iota(state: bigint[][], roundConstant: bigint): bigint[][] {
     const newState = state.map(row => [...row]);
     newState[0][0] ^= roundConstant;
     return newState;
   }
 
-  /**
-   * Keccak-f[1600] Round Function
-   * Một vòng đầy đủ = theta + rho + pi + chi + iota
-   */
   static round(
     state: bigint[][],
     roundConstant: bigint,
@@ -103,10 +78,6 @@ export class Keccak256Operations {
     return newState;
   }
 
-  /**
-   * Round function có log chi tiết 5 sub-step (θ ρ π χ ι).
-   * Nếu showMatrix=true, in ma trận 5×5 sau mỗi sub-step.
-   */
   static roundVerbose(
     state: bigint[][],
     roundConstant: bigint,
@@ -138,31 +109,18 @@ export class Keccak256Operations {
     return afterIota;
   }
 
-  /**
-   * Pad10*1 - Padding function cho Keccak
-   * Thêm "1" vào cuối message, các "0", và "1" ở vị trí cuối
-   */
   static pad10_1(message: Uint8Array, blockSize: number): Uint8Array {
     const messageLength = message.length;
     const paddingLength = blockSize - (messageLength % blockSize);
 
     const paddedMessage = new Uint8Array(messageLength + paddingLength);
     paddedMessage.set(message);
-
-    // Thêm byte đầu tiên của padding
-    paddedMessage[messageLength] = 0x06; // Domain separation + 1
-
-    // Các byte ở giữa đã là 0 (vì Uint8Array khởi tạo với 0)
-
-    // Thêm byte cuối cùng
+    paddedMessage[messageLength] = 0x06; 
     paddedMessage[paddedMessage.length - 1] |= 0x80;
 
     return paddedMessage;
   }
 
-  /**
-   * Convert bytes to Keccak state (5x5 lanes)
-   */
   static bytesToState(bytes: Uint8Array, blockSize: number): bigint[][] {
     const state: bigint[][] = Array(5).fill(null).map(() => Array(5).fill(0n));
     let byteIndex = 0;
@@ -182,9 +140,6 @@ export class Keccak256Operations {
     return state;
   }
 
-  /**
-   * Convert Keccak state back to bytes
-   */
   static stateToBytes(state: bigint[][], outputSize: number): Uint8Array {
     const bytes = new Uint8Array(outputSize);
     let byteIndex = 0;
@@ -201,9 +156,6 @@ export class Keccak256Operations {
     return bytes;
   }
 
-  /**
-   * Absorbing phase - Đưa message vào sponge
-   */
   static absorb(
     message: Uint8Array,
     blockSize: number,
@@ -213,21 +165,18 @@ export class Keccak256Operations {
   ): bigint[][] {
     let state: bigint[][] = Array(5).fill(null).map(() => Array(5).fill(0n));
     const paddedMessage = this.pad10_1(message, blockSize);
-
     const blockSizeBytes = blockSize / 8;
 
     for (let blockIndex = 0; blockIndex < paddedMessage.length; blockIndex += blockSizeBytes) {
       const block = paddedMessage.slice(blockIndex, blockIndex + blockSizeBytes);
       const blockState = this.bytesToState(block, blockSize);
-
-      // XOR block vào state
+      
       for (let x = 0; x < 5; x++) {
         for (let y = 0; y < 5; y++) {
           state[x][y] ^= blockState[x][y];
         }
       }
-
-      // Apply Keccak-f[1600]
+      
       for (let round = 0; round < rounds; round++) {
         state = this.round(state, roundConstants[round], offsets);
       }
@@ -236,9 +185,6 @@ export class Keccak256Operations {
     return state;
   }
 
-  /**
-   * Squeezing phase - Lấy output từ sponge
-   */
   static squeeze(
     state: bigint[][],
     outputSize: number,

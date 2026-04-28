@@ -1,4 +1,3 @@
-// Lặp lại shiftRow và XOR trong mix columns
 import { xtime } from './xtime';
 
 export function gfMultiply(a: number, b: number): number {

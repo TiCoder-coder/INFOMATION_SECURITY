@@ -1,7 +1,4 @@
-/**
- * Main Entry Point
- * SHA-XXX Encoder
- */
+
 
 import { UserInterface } from './src/cli/user_interface';
 

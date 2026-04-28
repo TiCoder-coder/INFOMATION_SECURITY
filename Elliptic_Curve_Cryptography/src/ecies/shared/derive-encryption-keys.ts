@@ -1,4 +1,3 @@
-// Dẫn xuất (EK, MK) từ shared secret z — dùng chung cho encrypt và decrypt.
 import { fieldElementToOctets } from '../../encoding/field-element-to-octets';
 import { fieldSizeBytes } from '../../encoding/field-size';
 import { kdf2 } from '../../kdf/kdf2';

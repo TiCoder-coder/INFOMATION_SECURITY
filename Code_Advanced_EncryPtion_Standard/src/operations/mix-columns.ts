@@ -4,7 +4,6 @@ import { NB, STATE_ROWS } from '../constants';
 
 const toHex = (n: number) => n.toString(16).padStart(2, '0');
 
-/** MixColumns: nhân ma trận AES column-by-column trên GF(2^8) */
 export function mixColumns(state: State): State {
   const result: State = Array.from({ length: STATE_ROWS }, () =>
     new Array(NB).fill(0)
@@ -25,7 +24,6 @@ export function mixColumns(state: State): State {
   return result;
 }
 
-/** MixColumns kèm chi tiết từng cột để logging */
 export function mixColumnsWithDetails(
   state: State
 ): { result: State; details: MixColumnsColumnLog[] } {

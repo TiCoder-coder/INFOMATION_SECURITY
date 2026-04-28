@@ -1,17 +1,4 @@
-/**
- * verify-schnorr.ts
- * -----------------------------------------------------------
- * Kiểm thử toàn bộ pipeline Schnorr:
- *   [A] SHA-256 (adapter) vs node:crypto
- *   [B] secp256k1 scalar-multiply vs node crypto.createECDH
- *   [C] Schnorr sign/verify roundtrip (20 random vectors)
- *   [D] Tamper detection (message / R / s / publicKey)
- *   [E] Math identity check: s·G == R + e·P
- *   [F] Determinism (cùng k,d,m → cùng (R,s))
- *
- * Chạy:  npm run verify
- * -----------------------------------------------------------
- */
+
 
 import crypto from 'node:crypto';
 import {
@@ -41,7 +28,6 @@ const eqBytes = (a: Uint8Array, b: Uint8Array): boolean => {
   return true;
 };
 
-// ─── [A] SHA-256 vs node:crypto ─────────────────────────────
 console.log('\n[A] SHA-256 adapter vs node:crypto');
 for (const msg of [
   Buffer.alloc(0),
@@ -54,13 +40,12 @@ for (const msg of [
   check(`sha256 len=${msg.length}`, eqBytes(mine, ref));
 }
 
-// ─── [B] secp256k1 scalar mult vs Node createECDH ─────────
 console.log('\n[B] secp256k1 scalar-multiply vs node:crypto');
 for (let i = 0; i < 5; i++) {
   const ec = crypto.createECDH('secp256k1');
   ec.generateKeys();
   const privBuf = ec.getPrivateKey();
-  const pubRef = ec.getPublicKey(); // 04||X||Y (65 bytes)
+  const pubRef = ec.getPublicKey(); 
   let d = 0n;
   for (const byte of privBuf) d = (d << 8n) | BigInt(byte);
 
@@ -69,7 +54,6 @@ for (let i = 0; i < 5; i++) {
   check(`pubkey match #${i + 1}`, eqBytes(pubMine, pubRef));
 }
 
-// ─── [C] Schnorr roundtrip ─────────────────────────────────
 console.log('\n[C] Schnorr sign/verify roundtrip');
 const enc = new TextEncoder();
 const messages = [
@@ -87,36 +71,34 @@ for (let i = 0; i < messages.length; i++) {
   check(`roundtrip msgLen=${msg.length}`, ok);
 }
 
-// ─── [D] Tamper detection ──────────────────────────────────
 console.log('\n[D] Tamper detection');
 {
   const msg = enc.encode('original message');
   const kp = generateSchnorrKeyPair(secp256k1);
   const sig = schnorrSign(msg, kp.privateKey, secp256k1);
 
-  // (1) tampered message
+  
   const bad1 = enc.encode('original messagE');
   check('rejects tampered message', !schnorrVerify(bad1, sig, kp.publicKey, secp256k1));
 
-  // (2) tampered s
+  
   const sig2 = { R: sig.R, s: (sig.s + 1n) % secp256k1.n };
   check('rejects tampered s', !schnorrVerify(msg, sig2, kp.publicKey, secp256k1));
 
-  // (3) tampered R (use another random R')
+  
   const kk = generateRandomScalar(secp256k1.n);
   const Rbad = scalarMultiply(kk, secp256k1.G, secp256k1);
   const sig3 = { R: Rbad, s: sig.s };
   check('rejects tampered R', !schnorrVerify(msg, sig3, kp.publicKey, secp256k1));
 
-  // (4) wrong public key
+  
   const kp2 = generateSchnorrKeyPair(secp256k1);
   check('rejects wrong public key', !schnorrVerify(msg, sig, kp2.publicKey, secp256k1));
 
-  // (5) valid signature still passes
+  
   check('positive control passes', schnorrVerify(msg, sig, kp.publicKey, secp256k1));
 }
 
-// ─── [E] Math identity s·G == R + e·P ─────────────────────
 console.log('\n[E] Math identity s·G ≡ R + e·P');
 for (let i = 0; i < 10; i++) {
   const msg = crypto.randomBytes(32 + (i * 7));
@@ -130,7 +112,6 @@ for (let i = 0; i < 10; i++) {
   check(`identity #${i + 1}`, same);
 }
 
-// ─── [F] Non-determinism: each sign uses random k ─────────
 console.log('\n[F] Random-nonce: two signs differ');
 {
   const msg = enc.encode('same message');
@@ -146,7 +127,6 @@ console.log('\n[F] Random-nonce: two signs differ');
       && schnorrVerify(msg, s2, kp.publicKey, secp256k1));
 }
 
-// ─── Summary ───────────────────────────────────────────────
 const passed = rows.filter(r => r.ok).length;
 const failed = rows.length - passed;
 console.log('\n' + '='.repeat(60));

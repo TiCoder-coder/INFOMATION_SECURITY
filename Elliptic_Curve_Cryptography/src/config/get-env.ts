@@ -1,4 +1,3 @@
-// Helper đọc biến môi trường với kiểm tra bắt buộc và parse.
 import { loadEnv } from './load-env';
 
 export function getEnv(key: string, required = true): string {

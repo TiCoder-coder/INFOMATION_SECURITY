@@ -1,9 +1,5 @@
-/**
- * Verification script:
- *   1. So sánh với Node.js built-in crypto (AES-CBC) — "gold standard"
- *      cho cả 3 key size (Node crypto cũng FIPS 197 compliant).
- *   2. Roundtrip encrypt→decrypt với nhiều loại input.
- */
+
+
 import * as crypto from 'crypto';
 import { aesEncrypt, aesDecrypt } from './aes';
 import { hexToBytes } from './utils';
@@ -45,9 +41,6 @@ console.log('============================================================');
 console.log('  AES VERIFICATION — vs Node crypto + Roundtrip');
 console.log('============================================================\n');
 
-// ------------------------------------------------------------------
-// GROUP 1: Khớp Node crypto AES-CBC cho cả 3 key size
-// ------------------------------------------------------------------
 const testCases: Array<{
   label: string;
   size: 128 | 192 | 256;
@@ -125,9 +118,6 @@ for (const tc of testCases) {
   check(tc.label, ours.ciphertextHex, expected);
 }
 
-// ------------------------------------------------------------------
-// GROUP 2: Roundtrip (encrypt → decrypt) cho cả 3 key size
-// ------------------------------------------------------------------
 console.log('\n📋 GROUP 2: Roundtrip encrypt→decrypt (với key/IV random)\n');
 {
   const samples = [
@@ -164,9 +154,6 @@ console.log('\n📋 GROUP 2: Roundtrip encrypt→decrypt (với key/IV random)\n
   );
 }
 
-// ------------------------------------------------------------------
-// GROUP 3: Decrypt đúng khi có ciphertext do Node crypto tạo ra
-// ------------------------------------------------------------------
 console.log('\n📋 GROUP 3: Decrypt ciphertext do Node crypto sinh ra\n');
 {
   for (const tc of testCases) {
@@ -178,12 +165,9 @@ console.log('\n📋 GROUP 3: Decrypt ciphertext do Node crypto sinh ra\n');
   }
 }
 
-// ------------------------------------------------------------------
-// GROUP 4: Edge cases — validation
-// ------------------------------------------------------------------
 console.log('\n📋 GROUP 4: Validation / edge cases\n');
 {
-  // Key length mismatch
+  
   try {
     aesEncrypt('abc', 128, {
       key: [1, 2, 3],
@@ -197,7 +181,7 @@ console.log('\n📋 GROUP 4: Validation / edge cases\n');
     passed++;
   }
 
-  // IV length mismatch
+  
   try {
     aesEncrypt('abc', 128, {
       key: new Array(16).fill(0),
@@ -211,7 +195,7 @@ console.log('\n📋 GROUP 4: Validation / edge cases\n');
     passed++;
   }
 
-  // Invalid key size in getAESConfig
+  
   try {
     aesEncrypt('abc', 100 as 128, { writeLogFiles: false });
     console.log('  ❌ Không throw khi key size không hợp lệ');
@@ -221,7 +205,7 @@ console.log('\n📋 GROUP 4: Validation / edge cases\n');
     passed++;
   }
 
-  // Ciphertext không phải bội của 16
+  
   try {
     aesDecrypt(
       'aabbcc',
@@ -238,9 +222,6 @@ console.log('\n📋 GROUP 4: Validation / edge cases\n');
   }
 }
 
-// ------------------------------------------------------------------
-// SUMMARY
-// ------------------------------------------------------------------
 console.log('\n============================================================');
 console.log(`  KẾT QUẢ: ${passed} passed, ${failed} failed`);
 console.log('============================================================');

@@ -1,17 +1,6 @@
-/**
- * Padding Handler
- * Bước 3: Padding (đệm thêm bit)
- * Bước 4: Ghi độ dài ban đầu của thông điệp
- */
-
 import { Logger } from '../utils/logger';
 import { TypeConverter } from '../utils/type_converter';
 
-/**
- * Encode độ dài bit của message thành big-endian bytes với độ rộng cố định.
- * Dùng BigInt để xử lý chính xác message dài hơn 2^29 byte (ngưỡng mà
- * bit-shift trên `number` 32-bit của JavaScript bắt đầu cắt mất bit cao).
- */
 function encodeBitLengthBE(byteLength: number, widthBytes: number): number[] {
   const bitLength = BigInt(byteLength) * 8n;
   const out = new Array<number>(widthBytes);
@@ -22,9 +11,6 @@ function encodeBitLengthBE(byteLength: number, widthBytes: number): number[] {
 }
 
 export class PaddingHandler {
-  /**
-   * Thêm padding cho SHA-256 / SHA-224 (block size = 512 bits = 64 bytes)
-   */
   static padSHA256(bytes: number[], logger: Logger): number[] {
     logger.step(3, 'Padding - Thêm bit 1 và các bit 0');
     logger.explain(`
@@ -59,9 +45,6 @@ Quy tắc padding (FIPS 180-4):
     return bytes;
   }
 
-  /**
-   * Thêm padding cho SHA-512 / SHA-384 (block size = 1024 bits = 128 bytes)
-   */
   static padSHA512(bytes: number[], logger: Logger): number[] {
     logger.step(3, 'Padding - Thêm bit 1 và các bit 0 (SHA-512)');
     logger.explain(`
@@ -92,9 +75,6 @@ Quy tắc giống SHA-256 nhưng block = 1024 bit, length field = 128 bit.
     return bytes;
   }
 
-  /**
-   * Thêm padding cho SHA-1 (block size = 512 bits = 64 bytes)
-   */
   static padSHA1(bytes: number[], logger: Logger): number[] {
     logger.step(3, 'Padding - Thêm bit 1 và các bit 0 (SHA-1)');
     logger.explain(`
