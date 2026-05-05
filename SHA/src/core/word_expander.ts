@@ -5,13 +5,13 @@ export class WordExpander {
   static expandSHA256(blockWords: number[], logger: Logger): number[] {
     logger.step(7, 'Tạo các từ mở rộng (SHA-256: 16 → 64 words)');
     logger.explain(`
-Mỗi block 512-bit được chia thành 16 từ 32-bit (W[0]..W[15]).
-48 từ còn lại (W[16]..W[63]) được sinh ra bằng công thức sau (FIPS 180-4):
+      Mỗi block 512-bit được chia thành 16 từ 32-bit (W[0]..W[15]).
+      48 từ còn lại (W[16]..W[63]) được sinh ra bằng công thức sau (FIPS 180-4):
 
-  σ0(x) = ROTR(x,7)  XOR ROTR(x,18) XOR SHR(x,3)
-  σ1(x) = ROTR(x,17) XOR ROTR(x,19) XOR SHR(x,10)
-  W[i]  = σ1(W[i-2]) + W[i-7] + σ0(W[i-15]) + W[i-16]   (mod 2^32)
-`);
+        σ0(x) = ROTR(x,7)  XOR ROTR(x,18) XOR SHR(x,3)
+        σ1(x) = ROTR(x,17) XOR ROTR(x,19) XOR SHR(x,10)
+        W[i]  = σ1(W[i-2]) + W[i-7] + σ0(W[i-15]) + W[i-16]   (mod 2^32)
+    `);
     logger.formula('σ0', 'ROTR(x,7) XOR ROTR(x,18) XOR SHR(x,3)');
     logger.formula('σ1', 'ROTR(x,17) XOR ROTR(x,19) XOR SHR(x,10)');
     logger.formula('W[i]', 'σ1(W[i-2]) + W[i-7] + σ0(W[i-15]) + W[i-16]');
@@ -47,9 +47,9 @@ Mỗi block 512-bit được chia thành 16 từ 32-bit (W[0]..W[15]).
   static expandSHA1(blockWords: number[], logger: Logger): number[] {
     logger.step(7, 'Tạo các từ mở rộng (SHA-1: 16 → 80 words)');
     logger.explain(`
-SHA-1 mở rộng message schedule bằng công thức đơn giản hơn SHA-2:
-  W[i] = ROTL(W[i-3] XOR W[i-8] XOR W[i-14] XOR W[i-16], 1)   với 16 ≤ i < 80
-`);
+      SHA-1 mở rộng message schedule bằng công thức đơn giản hơn SHA-2:
+        W[i] = ROTL(W[i-3] XOR W[i-8] XOR W[i-14] XOR W[i-16], 1)   với 16 ≤ i < 80
+    `);
     logger.formula('W[i]', 'ROTL( W[i-3] XOR W[i-8] XOR W[i-14] XOR W[i-16], 1 )');
 
     const w: number[] = [...blockWords];
@@ -76,11 +76,11 @@ SHA-1 mở rộng message schedule bằng công thức đơn giản hơn SHA-2:
   static expandSHA512(blockWords: bigint[], logger: Logger): bigint[] {
     logger.step(7, 'Tạo các từ mở rộng (SHA-512: 16 → 80 words, 64-bit)');
     logger.explain(`
-SHA-512 tương tự SHA-256 nhưng toán hạng 64-bit, số rotate khác:
-  σ0(x) = ROTR(x,1)  XOR ROTR(x,8)  XOR SHR(x,7)
-  σ1(x) = ROTR(x,19) XOR ROTR(x,61) XOR SHR(x,6)
-  W[i]  = σ1(W[i-2]) + W[i-7] + σ0(W[i-15]) + W[i-16]   (mod 2^64)
-`);
+      SHA-512 tương tự SHA-256 nhưng toán hạng 64-bit, số rotate khác:
+        σ0(x) = ROTR(x,1)  XOR ROTR(x,8)  XOR SHR(x,7)
+        σ1(x) = ROTR(x,19) XOR ROTR(x,61) XOR SHR(x,6)
+        W[i]  = σ1(W[i-2]) + W[i-7] + σ0(W[i-15]) + W[i-16]   (mod 2^64)
+    `);
     logger.formula('σ0', 'ROTR(x,1) XOR ROTR(x,8) XOR SHR(x,7)');
     logger.formula('σ1', 'ROTR(x,19) XOR ROTR(x,61) XOR SHR(x,6)');
 

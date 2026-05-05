@@ -14,18 +14,18 @@ export class CompressionEngine {
   ): number[] {
     logger.step(8, `Thực hiện các vòng nén (${label}: 64 rounds)`);
     logger.explain(`
-Mỗi round ${label} cập nhật 8 working variable (a..h) theo:
+      Mỗi round ${label} cập nhật 8 working variable (a..h) theo:
 
-  Σ0(a) = ROTR(a,2)  XOR ROTR(a,13) XOR ROTR(a,22)
-  Σ1(e) = ROTR(e,6)  XOR ROTR(e,11) XOR ROTR(e,25)
-  Ch(e,f,g)  = (e AND f) XOR ((NOT e) AND g)
-  Maj(a,b,c) = (a AND b) XOR (a AND c) XOR (b AND c)
+        Σ0(a) = ROTR(a,2)  XOR ROTR(a,13) XOR ROTR(a,22)
+        Σ1(e) = ROTR(e,6)  XOR ROTR(e,11) XOR ROTR(e,25)
+        Ch(e,f,g)  = (e AND f) XOR ((NOT e) AND g)
+        Maj(a,b,c) = (a AND b) XOR (a AND c) XOR (b AND c)
 
-  T1 = h + Σ1(e) + Ch(e,f,g) + K[i] + W[i]
-  T2 = Σ0(a) + Maj(a,b,c)
+        T1 = h + Σ1(e) + Ch(e,f,g) + K[i] + W[i]
+        T2 = Σ0(a) + Maj(a,b,c)
 
-  h=g; g=f; f=e; e=d+T1; d=c; c=b; b=a; a=T1+T2    (mod 2^32)
-`);
+        h=g; g=f; f=e; e=d+T1; d=c; c=b; b=a; a=T1+T2    (mod 2^32)
+    `);
 
     let [a, b, c, d, e, f, g, h] = hashState;
     logger.note(
@@ -86,17 +86,17 @@ Mỗi round ${label} cập nhật 8 working variable (a..h) theo:
   ): number[] {
     logger.step(8, 'Thực hiện các vòng nén (SHA-1: 80 rounds)');
     logger.explain(`
-SHA-1 dùng 5 working variable a..e và chia 80 round thành 4 đoạn,
-mỗi đoạn 20 round dùng hàm f và hằng số K khác nhau:
+      SHA-1 dùng 5 working variable a..e và chia 80 round thành 4 đoạn,
+      mỗi đoạn 20 round dùng hàm f và hằng số K khác nhau:
 
-  t ∈  0..19: f = (b AND c) OR ((NOT b) AND d)           K = 0x5A827999
-  t ∈ 20..39: f = b XOR c XOR d                          K = 0x6ED9EBA1
-  t ∈ 40..59: f = (b AND c) OR (b AND d) OR (c AND d)    K = 0x8F1BBCDC
-  t ∈ 60..79: f = b XOR c XOR d                          K = 0xCA62C1D6
+        t ∈  0..19: f = (b AND c) OR ((NOT b) AND d)           K = 0x5A827999
+        t ∈ 20..39: f = b XOR c XOR d                          K = 0x6ED9EBA1
+        t ∈ 40..59: f = (b AND c) OR (b AND d) OR (c AND d)    K = 0x8F1BBCDC
+        t ∈ 60..79: f = b XOR c XOR d                          K = 0xCA62C1D6
 
-  TEMP = ROTL(a,5) + f + e + K + W[t]   (mod 2^32)
-  e = d;  d = c;  c = ROTL(b,30);  b = a;  a = TEMP
-`);
+        TEMP = ROTL(a,5) + f + e + K + W[t]   (mod 2^32)
+        e = d;  d = c;  c = ROTL(b,30);  b = a;  a = TEMP
+    `);
 
     let [a, b, c, d, e] = hashState;
     logger.note(`Init: a=${hex32(a)} b=${hex32(b)} c=${hex32(c)} d=${hex32(d)} e=${hex32(e)}`);
@@ -140,17 +140,17 @@ mỗi đoạn 20 round dùng hàm f và hằng số K khác nhau:
   ): bigint[] {
     logger.step(8, `Thực hiện các vòng nén (${label}: 80 rounds, 64-bit)`);
     logger.explain(`
-${label} tương tự SHA-256 nhưng toán hạng 64-bit và các rotate khác:
+    ${label} tương tự SHA-256 nhưng toán hạng 64-bit và các rotate khác:
 
-  Σ0(a) = ROTR(a,28) XOR ROTR(a,34) XOR ROTR(a,39)
-  Σ1(e) = ROTR(e,14) XOR ROTR(e,18) XOR ROTR(e,41)
-  Ch(e,f,g)  = (e AND f) XOR ((NOT e) AND g)
-  Maj(a,b,c) = (a AND b) XOR (a AND c) XOR (b AND c)
+      Σ0(a) = ROTR(a,28) XOR ROTR(a,34) XOR ROTR(a,39)
+      Σ1(e) = ROTR(e,14) XOR ROTR(e,18) XOR ROTR(e,41)
+      Ch(e,f,g)  = (e AND f) XOR ((NOT e) AND g)
+      Maj(a,b,c) = (a AND b) XOR (a AND c) XOR (b AND c)
 
-  T1 = h + Σ1(e) + Ch(e,f,g) + K[i] + W[i]
-  T2 = Σ0(a) + Maj(a,b,c)
-  h=g; g=f; f=e; e=d+T1; d=c; c=b; b=a; a=T1+T2    (mod 2^64)
-`);
+      T1 = h + Σ1(e) + Ch(e,f,g) + K[i] + W[i]
+      T2 = Σ0(a) + Maj(a,b,c)
+      h=g; g=f; f=e; e=d+T1; d=c; c=b; b=a; a=T1+T2    (mod 2^64)
+    `);
 
     let [a, b, c, d, e, f, g, h] = hashState;
     logger.note(`Init: a=${hex64(a)} e=${hex64(e)}`);

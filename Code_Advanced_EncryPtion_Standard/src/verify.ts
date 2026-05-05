@@ -1,5 +1,3 @@
-
-
 import * as crypto from 'crypto';
 import { aesEncrypt, aesDecrypt } from './aes';
 import { hexToBytes } from './utils';

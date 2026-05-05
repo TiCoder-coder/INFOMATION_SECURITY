@@ -5,22 +5,22 @@ export class InputProcessor {
   static process(input: string, logger: Logger): number[] {
     logger.step(1, 'Nhận dữ liệu đầu vào');
     logger.explain(`
-Input là một chuỗi Unicode do người dùng nhập. Thuật toán SHA chỉ xử lý
-dãy byte, nên bước kế tiếp sẽ mã hoá chuỗi này sang UTF-8 để mỗi ký tự
-được biểu diễn bằng 1-4 byte.
-`);
+      Input là một chuỗi Unicode do người dùng nhập. Thuật toán SHA chỉ xử lý
+      dãy byte, nên bước kế tiếp sẽ mã hoá chuỗi này sang UTF-8 để mỗi ký tự
+      được biểu diễn bằng 1-4 byte.
+    `);
     logger.info(`Input string: "${input}"`);
     logger.info(`Input length (ký tự): ${input.length}`);
 
     logger.step(2, 'Chuyển dữ liệu sang dạng nhị phân (UTF-8)');
     logger.explain(`
-Mỗi ký tự Unicode được mã hoá UTF-8:
-  • ASCII (U+0000..U+007F)        → 1 byte
-  • Latin mở rộng (U+0080..U+07FF) → 2 byte
-  • Ký tự Việt, CJK (U+0800..U+FFFF) → 3 byte
-  • Emoji, ký tự hiếm             → 4 byte
-Kết quả là mảng byte (0..255) sẽ được dùng làm input thô cho SHA.
-`);
+      Mỗi ký tự Unicode được mã hoá UTF-8:
+        • ASCII (U+0000..U+007F)        → 1 byte
+        • Latin mở rộng (U+0080..U+07FF) → 2 byte
+        • Ký tự Việt, CJK (U+0800..U+FFFF) → 3 byte
+        • Emoji, ký tự hiếm             → 4 byte
+      Kết quả là mảng byte (0..255) sẽ được dùng làm input thô cho SHA.
+    `);
     const bytes = TypeConverter.stringToBytes(input);
 
     logger.info(`Total bytes (sau UTF-8): ${bytes.length}`);

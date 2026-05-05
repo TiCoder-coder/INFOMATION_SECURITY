@@ -20,13 +20,10 @@ function hashFunc(alg: HashAlg, data: Uint8Array): Uint8Array {
 export function hmac(alg: HashAlg, key: Uint8Array, data: Uint8Array): Uint8Array {
   const { blockLen } = HASH_PARAMS[alg];
 
-  
   let k = key.length > blockLen ? hashFunc(alg, key) : key;
 
-  
   const kPad = new Uint8Array(blockLen);
   kPad.set(k);
-
   
   const ipad = new Uint8Array(blockLen + data.length);
   const opadData = new Uint8Array(blockLen + HASH_PARAMS[alg].digestLen);
@@ -37,9 +34,7 @@ export function hmac(alg: HashAlg, key: Uint8Array, data: Uint8Array): Uint8Arra
   }
   ipad.set(data, blockLen);
 
-  
   const inner = hashFunc(alg, ipad);
-
   
   opadData.set(inner, blockLen);
   return hashFunc(alg, opadData);

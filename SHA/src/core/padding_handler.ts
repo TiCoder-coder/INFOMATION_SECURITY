@@ -14,13 +14,13 @@ export class PaddingHandler {
   static padSHA256(bytes: number[], logger: Logger): number[] {
     logger.step(3, 'Padding - Thêm bit 1 và các bit 0');
     logger.explain(`
-SHA-256 yêu cầu độ dài message sau padding phải ≡ 448 (mod 512) bit,
-tức 56 bytes (mod 64). 8 bytes cuối dành cho độ dài gốc (64-bit).
-Quy tắc padding (FIPS 180-4):
-  1. Nối bit "1" ngay sau bit cuối của message → byte 0x80.
-  2. Nối các bit "0" cho đến khi độ dài ≡ 56 mod 64 bytes.
-  3. Nối độ dài gốc (bit, big-endian) dưới dạng 64-bit integer.
-`);
+      SHA-256 yêu cầu độ dài message sau padding phải ≡ 448 (mod 512) bit,
+      tức 56 bytes (mod 64). 8 bytes cuối dành cho độ dài gốc (64-bit).
+      Quy tắc padding (FIPS 180-4):
+        1. Nối bit "1" ngay sau bit cuối của message → byte 0x80.
+        2. Nối các bit "0" cho đến khi độ dài ≡ 56 mod 64 bytes.
+        3. Nối độ dài gốc (bit, big-endian) dưới dạng 64-bit integer.
+    `);
     const originalLength = bytes.length;
 
     bytes.push(0x80);
@@ -48,10 +48,10 @@ Quy tắc padding (FIPS 180-4):
   static padSHA512(bytes: number[], logger: Logger): number[] {
     logger.step(3, 'Padding - Thêm bit 1 và các bit 0 (SHA-512)');
     logger.explain(`
-SHA-512 yêu cầu độ dài sau padding ≡ 896 (mod 1024) bit, tức 112 (mod 128) byte.
-16 bytes cuối dành cho độ dài gốc (128-bit big-endian).
-Quy tắc giống SHA-256 nhưng block = 1024 bit, length field = 128 bit.
-`);
+      SHA-512 yêu cầu độ dài sau padding ≡ 896 (mod 1024) bit, tức 112 (mod 128) byte.
+      16 bytes cuối dành cho độ dài gốc (128-bit big-endian).
+      Quy tắc giống SHA-256 nhưng block = 1024 bit, length field = 128 bit.
+    `);
     const originalLength = bytes.length;
 
     bytes.push(0x80);

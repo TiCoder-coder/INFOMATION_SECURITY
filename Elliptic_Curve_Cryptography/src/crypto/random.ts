@@ -4,7 +4,7 @@ export function randomBytes(n: number): Uint8Array {
   }
   const buf = new Uint8Array(n);
   
-  const chunkSize = 65536;
+  const chunkSize = 65536; // 64KB
   for (let off = 0; off < n; off += chunkSize) {
     const chunk = buf.subarray(off, Math.min(off + chunkSize, n));
     globalThis.crypto.getRandomValues(chunk);

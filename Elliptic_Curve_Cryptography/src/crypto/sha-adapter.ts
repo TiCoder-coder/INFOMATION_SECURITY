@@ -1,33 +1,31 @@
-
-
-import { PaddingHandler }    from '../../../SHA/src/core/padding_handler';
-import { BlockHandler }      from '../../../SHA/src/core/block_handler';
-import { HashInitializer }   from '../../../SHA/src/core/hash_initializer';
-import { WordExpander }      from '../../../SHA/src/core/word_expander';
+import { PaddingHandler } from '../../../SHA/src/core/padding_handler';
+import { BlockHandler } from '../../../SHA/src/core/block_handler';
+import { HashInitializer } from '../../../SHA/src/core/hash_initializer';
+import { WordExpander } from '../../../SHA/src/core/word_expander';
 import { CompressionEngine } from '../../../SHA/src/core/compression_engine';
-import { HashAggregator }    from '../../../SHA/src/core/hash_aggregator';
-import { Logger }            from '../../../SHA/src/utils/logger';
+import { HashAggregator } from '../../../SHA/src/core/hash_aggregator';
+import { Logger } from '../../../SHA/src/utils/logger';
 
 const _logger: Logger = Object.assign(
   Object.create(Logger.prototype) as Logger,
   {
-    info:       () => {},
-    debug:      () => {},
-    error:      () => {},
-    section:    () => {},
-    step:       () => {},
-    hex:        () => {},
-    binary:     () => {},
-    array:      () => {},
-    explain:    () => {},
-    formula:    () => {},
-    subStep:    () => {},
-    note:       () => {},
-    matrix5x5:  () => {},
-    round:      () => {},
-    result:     () => {},
-    summary:    () => {},
-    getLogPath: () => '',
+    info:() => {},
+    debug:() => {},
+    error:() => {},
+    section:() => {},
+    step:() => {},
+    hex:() => {},
+    binary:() => {},
+    array:() => {},
+    explain:() => {},
+    formula:() => {},
+    subStep:() => {},
+    note:() => {},
+    matrix5x5:() => {},
+    round:() => {},
+    result:() => {},
+    summary:() => {},
+    getLogPath:() => '',
   }
 );
 
