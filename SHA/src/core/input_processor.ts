@@ -43,7 +43,7 @@ export class InputProcessor {
       logger.note(
         `  '${ch}' U+${codePoint.toString(16).toUpperCase().padStart(4, '0')} → ` +
           chBytes.map((b) => '0x' + b.toString(16).padStart(2, '0')).join(' ')
-      );
+      );``
     }
 
     return bytes;

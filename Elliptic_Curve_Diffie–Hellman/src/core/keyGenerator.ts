@@ -10,13 +10,9 @@ import { bufferToBigInt, bigIntToBuffer } from "../math/index.ts";
 export interface KeyPair {
   owner: string;
   curveName: string;
-  
   d: bigint;
-  
   Q: ECPoint;
-  
   publicKey: Buffer;
-  
   privateKey: Buffer;
 }
 

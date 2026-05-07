@@ -1,5 +1,3 @@
-
-
 import crypto from 'node:crypto';
 import {
   generateSchnorrKeyPair,
@@ -45,7 +43,7 @@ for (let i = 0; i < 5; i++) {
   const ec = crypto.createECDH('secp256k1');
   ec.generateKeys();
   const privBuf = ec.getPrivateKey();
-  const pubRef = ec.getPublicKey(); 
+  const pubRef = ec.getPublicKey();
   let d = 0n;
   for (const byte of privBuf) d = (d << 8n) | BigInt(byte);
 
@@ -59,7 +57,7 @@ const enc = new TextEncoder();
 const messages = [
   'hello',
   '',
-  'Tôi ký ở đây 🚀',
+  'Tôi ký ở đây',
   'x'.repeat(1000),
   'Chuyển 100 BTC cho Alice',
 ];
@@ -77,25 +75,25 @@ console.log('\n[D] Tamper detection');
   const kp = generateSchnorrKeyPair(secp256k1);
   const sig = schnorrSign(msg, kp.privateKey, secp256k1);
 
-  
+
   const bad1 = enc.encode('original messagE');
   check('rejects tampered message', !schnorrVerify(bad1, sig, kp.publicKey, secp256k1));
 
-  
+
   const sig2 = { R: sig.R, s: (sig.s + 1n) % secp256k1.n };
   check('rejects tampered s', !schnorrVerify(msg, sig2, kp.publicKey, secp256k1));
 
-  
+
   const kk = generateRandomScalar(secp256k1.n);
   const Rbad = scalarMultiply(kk, secp256k1.G, secp256k1);
   const sig3 = { R: Rbad, s: sig.s };
   check('rejects tampered R', !schnorrVerify(msg, sig3, kp.publicKey, secp256k1));
 
-  
+
   const kp2 = generateSchnorrKeyPair(secp256k1);
   check('rejects wrong public key', !schnorrVerify(msg, sig, kp2.publicKey, secp256k1));
 
-  
+
   check('positive control passes', schnorrVerify(msg, sig, kp.publicKey, secp256k1));
 }
 
@@ -124,7 +122,7 @@ console.log('\n[F] Random-nonce: two signs differ');
   check('two signs yield distinct s', s1.s !== s2.s);
   check('both signs verify OK',
     schnorrVerify(msg, s1, kp.publicKey, secp256k1)
-      && schnorrVerify(msg, s2, kp.publicKey, secp256k1));
+    && schnorrVerify(msg, s2, kp.publicKey, secp256k1));
 }
 
 const passed = rows.filter(r => r.ok).length;

@@ -41,7 +41,6 @@ function gfMul(X: U128, Y: U128): U128 {
       Zlo ^= Vlo;
     }
 
-    
     const lsb = Vlo & 1n;
     Vlo = (Vlo >> 1n) | ((Vhi & 1n) << 63n);
     Vhi = Vhi >> 1n;

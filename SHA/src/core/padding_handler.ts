@@ -78,9 +78,9 @@ export class PaddingHandler {
   static padSHA1(bytes: number[], logger: Logger): number[] {
     logger.step(3, 'Padding - Thêm bit 1 và các bit 0 (SHA-1)');
     logger.explain(`
-SHA-1 dùng cùng quy tắc padding như SHA-256: bit "1" + các bit "0" + 64-bit
-độ dài (big-endian), block 512 bit.
-`);
+      SHA-1 dùng cùng quy tắc padding như SHA-256: bit "1" + các bit "0" + 64-bit
+      độ dài (big-endian), block 512 bit.
+    `);
     const originalLength = bytes.length;
 
     bytes.push(0x80);

@@ -11,18 +11,14 @@ export function schnorrVerify(
   logger?: SchnorrLogger
 ): boolean {
   if (logger) logger.section('XAC MINH CHU KY SCHNORR');
-
   const { R, s } = signature;
   if (logger) {
     logger.stepLog('Trích xuat Sig = (R, s)');
     logger.hex('Gia tri s', s);
   }
-
-  
   if (logger) logger.stepLog('Tinh Toan Lai e = H(R || P || m)');
   const e = computeChallenge(R, publicKey, message, domain, logger);
 
-  
   const L = scalarMultiply(s, domain.G, domain);
   if (logger) {
     logger.stepLog('Tinh Ve Trai (L = s * G)', 'Diem L (X, Y)');
@@ -34,7 +30,6 @@ export function schnorrVerify(
     }
   }
 
-  
   const eP = scalarMultiply(e, publicKey, domain);
   if (logger) {
     logger.stepLog('Tinh Giao (e * P)');
@@ -54,7 +49,6 @@ export function schnorrVerify(
       logger.kv('V', 'Infinity');
     }
   }
-
   
   let isValid = false;
   if (L.infinity || V.infinity) {

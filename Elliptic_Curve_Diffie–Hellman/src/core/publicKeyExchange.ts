@@ -35,7 +35,6 @@ export function unpackAndValidate(
     throw new Error("[publicKeyExchange] Khoá công khai là điểm vô cực");
   }
 
-  
   const nQ = scalarMultiply(c.n, Q, c);
   if (!nQ.infinity) {
     throw new Error(

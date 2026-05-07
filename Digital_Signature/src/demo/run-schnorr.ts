@@ -11,7 +11,7 @@ import { scalarMultiply } from '../ecc-proxy';
 const textEncoder = new TextEncoder();
 const logger = new SchnorrLogger();
 
-console.log(`\n📄[INFO] Da tao File Log chi tiet tai: ${logger.path}\n`);
+console.log(`\n[INFO] Da tao File Log chi tiet tai: ${logger.path}\n`);
 
 logger.section("DEMO: CHU KY SO SCHNORR (SECP256K1) QUY MO MICRO-ARCHITECTURE");
 

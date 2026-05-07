@@ -3,9 +3,7 @@ import { scalarMultiply } from "../math/index.ts";
 import { bigIntToBuffer } from "../math/index.ts";
 
 export interface SharedSecret {
-  
   point: ECPoint;
-  
   Z: Buffer;
 }
 

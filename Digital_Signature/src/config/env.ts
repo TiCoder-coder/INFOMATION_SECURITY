@@ -8,15 +8,9 @@ if (existsSync(envPath)) {
 }
 
 export const envConfig = {
-  
-
   ALICE_PRIVATE_KEY: process.env.ALICE_PRIVATE_KEY 
     ? BigInt('0x' + process.env.ALICE_PRIVATE_KEY)
-    : undefined,
-
-  
+    : undefined,  
   DEFAULT_MESSAGE: process.env.DEFAULT_MESSAGE || "Message mac dinh tu he thong",
-
-  
   TAMPERED_MESSAGE: process.env.TAMPERED_MESSAGE || "Message tan cong default"
 };
